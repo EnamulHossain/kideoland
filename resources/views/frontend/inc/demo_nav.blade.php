@@ -13,7 +13,7 @@
     </div>
     <!-- Mobile bottom nav toggler-->
     <div class="aiz-demo-nav-links">
-        <a href="https://activeitzone.com/docs/active-ecommerce-cms/" class="aiz-demo-nav-item" target="_blank">
+        <a href="" class="aiz-demo-nav-item" target="_blank">
             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="24" viewBox="0 0 18 24">
                 <path id="Google_Docs" data-name="Google Docs" d="M20.85,5.15l-5-5A.5.5,0,0,0,15.5,0H5A2,2,0,0,0,3,2V22a2,2,0,0,0,2,2H19a2,2,0,0,0,2-2V5.5a.5.5,0,0,0-.15-.35ZM12.5,18h-5a.5.5,0,0,1,0-1h5a.5.5,0,0,1,0,1Zm4-2h-9a.5.5,0,0,1,0-1h9a.5.5,0,0,1,0,1Zm0-2h-9a.5.5,0,0,1,0-1h9a.5.5,0,0,1,0,1Zm0-2h-9a.5.5,0,0,1,0-1h9a.5.5,0,0,1,0,1ZM17,5a1,1,0,0,1-1-1V1.71L19.29,5Z" transform="translate(-3)" fill="gray"/>
             </svg>
@@ -45,7 +45,7 @@
                 <!-- Main Demo -->
                 <div class="col-md-6 my-3">
                     <div class="demo-img-content">
-                        <a href="https://demo.activeitzone.com/ecommerce/" target="_blank" class="h-100 w-100">
+                        <a href="" target="_blank" class="h-100 w-100">
                             <img src="{{ static_asset('assets/img/demo/demo_thumb_main.png') }}">
                         </a>
                     </div>
@@ -54,7 +54,7 @@
                 <!-- Grocery Store -->
                 <div class="col-md-6 my-3">
                     <div class="demo-img-content">
-                        <a href="https://demo.activeitzone.com/ecommerce-grocery/" target="_blank" class="h-100 w-100">
+                        <a href="" target="_blank" class="h-100 w-100">
                             <img src="{{ static_asset('assets/img/demo/demo_thumb_grocery.png') }}">
                         </a>
                     </div>
@@ -63,7 +63,7 @@
                 <!-- Electronics Shop -->
                 <div class="col-md-6 my-3">
                     <div class="demo-img-content">
-                        <a href="https://demo.activeitzone.com/ecommerce-electronics/" target="_blank" class="h-100 w-100">
+                        <a href="" target="_blank" class="h-100 w-100">
                             <img src="{{ static_asset('assets/img/demo/demo_thumb_technology.png') }}">
                         </a>
                     </div>
@@ -72,7 +72,7 @@
                 <!-- Fashion Store -->
                 <div class="col-md-6 my-3">
                     <div class="demo-img-content">
-                        <a href="https://demo.activeitzone.com/ecommerce-fashion/" target="_blank" class="h-100 w-100">
+                        <a href="" target="_blank" class="h-100 w-100">
                             <img src="{{ static_asset('assets/img/demo/demo_thumb_fashion.png') }}">
                         </a>
                     </div>
@@ -81,7 +81,7 @@
                 <!-- Automobile Store -->
                 <div class="col-md-6 my-3">
                     <div class="demo-img-content">
-                        <a href="https://demo.activeitzone.com/ecommerce-automobile/" target="_blank" class="h-100 w-100">
+                        <a href="" target="_blank" class="h-100 w-100">
                             <img src="{{ static_asset('assets/img/demo/demo_thumb_automobile.png') }}">
                         </a>
                     </div>
@@ -90,7 +90,7 @@
                 <!-- Furniture Store -->
                 <div class="col-md-6 my-3">
                     <div class="demo-img-content">
-                        <a href="https://demo.activeitzone.com/ecommerce-furniture/" target="_blank" class="h-100 w-100">
+                        <a href="" target="_blank" class="h-100 w-100">
                             <img src="{{ static_asset('assets/img/demo/demo_thumb_furniture.png') }}">
                         </a>
                     </div>
@@ -99,7 +99,7 @@
                 <!-- Medical Store -->
                 <div class="col-md-6 my-3">
                     <div class="demo-img-content">
-                        <a href="https://demo.activeitzone.com/ecommerce-medical/" target="_blank" class="h-100 w-100">
+                        <a href="" target="_blank" class="h-100 w-100">
                             <img src="{{ static_asset('assets/img/demo/demo_thumb_medical.png') }}">
                         </a>
                     </div>
@@ -108,7 +108,7 @@
                 <!-- Sports Store -->
                 <div class="col-md-6 my-3">
                     <div class="demo-img-content">
-                        <a href="https://demo.activeitzone.com/ecommerce-sports/" target="_blank" class="h-100 w-100">
+                        <a href="" target="_blank" class="h-100 w-100">
                             <img src="{{ static_asset('assets/img/demo/demo_thumb_sports.png') }}">
                         </a>
                     </div>
@@ -117,7 +117,7 @@
                 <!-- Construction Store -->
                 <div class="col-md-6 my-3">
                     <div class="demo-img-content">
-                        <a href="https://demo.activeitzone.com/ecommerce-construction/" target="_blank" class="h-100 w-100">
+                        <a href="" target="_blank" class="h-100 w-100">
                             <img src="{{ static_asset('assets/img/demo/demo_thumb_construction.png') }}">
                         </a>
                     </div>
@@ -126,7 +126,7 @@
                 <!-- Megamart -->
                 <div class="col-md-6 my-3">
                     <div class="demo-img-content">
-                        <a href="https://demo.activeitzone.com/ecommerce-megamart/" target="_blank" class="h-100 w-100">
+                        <a href="" target="_blank" class="h-100 w-100">
                             <img src="{{ static_asset('assets/img/demo/demo_thumb_megamart.png') }}">
                         </a>
                     </div>
@@ -135,7 +135,7 @@
                 <!-- Beauty Store -->
                 <div class="col-md-6 my-3">
                     <div class="demo-img-content">
-                        <a href="https://demo.activeitzone.com/ecommerce-beauty-store/" target="_blank" class="h-100 w-100">
+                        <a href="" target="_blank" class="h-100 w-100">
                             <img src="{{ static_asset('assets/img/demo/demo_thumb_beauty.png') }}">
                         </a>
                     </div>
