@@ -1,68 +1,27 @@
-# Laravel & PHP
-/vendor/
-/node_modules/
-/bootstrap/cache/
-/storage/*.key
 .env
-.env.*.local
+/bootstrap/compiled.php
+.env.*.php
+.env.php
+
+/node_modules
+/public/assets
+/public/storage
+/public/uploads
+/storage/*.key
+/storage/debugbar
+/vendor
+/temp
 /.idea
 /.vscode
-/.phpunit.result.cache
-/ Homestead.json
-/ Homestead.yaml
-/ npm-debug.log
-/ yarn-error.log
-/.php_cs
-/.php_cs.cache
-docker-compose.override.yml
-
-# Composer
-/composer.lock
-/composer.phar
-
-# Assets
-/public/js/
-/public/css/
-/public/storage
-/public/hot
-/public/storage
-/public/mix-manifest.json
-
-# Testing
-/coverage
-
-# macOS
+/.vagrant
+Homestead.json
+Homestead.yaml
+npm-debug.log
+yarn-error.log
 .DS_Store
-
-# Windows
-Thumbs.db
-
-# Linux
-*.swp
-
-# Laravel specific
-storage/framework/cache/data/
-storage/framework/sessions/
-storage/framework/views/
-storage/logs/
-storage/debugbar/
-
-# Ignore compiled assets
-# /public/build
-
-# Ignore local development files
-/.nova
-/.phpstorm.meta.php
-_ide_helper.php
-*.sublime-workspace
-*.sublime-project
-
-# Ignore deployment scripts
-/deploy.php
-/deploy/
-
-# Ignore IDE specific files
-.idea
-.project
-.settings/
-.buildpath
+.idea/
+/public/*
+updates/
+composer.lock
+*.lock
+resources/lang/en.json
