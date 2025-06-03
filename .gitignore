@@ -3,8 +3,8 @@
 /node_modules/
 /bootstrap/cache/
 /storage/*.key
-/.env
-/.env.*.local
+.env
+.env.*.local
 /.idea
 /.vscode
 /.phpunit.result.cache
