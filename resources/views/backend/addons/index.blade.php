@@ -107,7 +107,7 @@
         }
 
         $(document).ready(function(){
-            $.post('https://activeitzone.com/addons/public/addons', {item: 'ecommerce'}, function(data){
+            $.post('', {item: 'ecommerce'}, function(data){
                 //console.log(data);
                 html = '';
                 data.forEach((item, i) => {

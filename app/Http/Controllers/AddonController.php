@@ -285,13 +285,7 @@ class AddonController extends Controller
 
     public static function checkActivation( $type, $key){
 
-        if($type == 'item'){
-            $url = "https://activation.activeitzone.com/item_info/".$key;
-        }else{
-            $url = "https://activation.activeitzone.com/registered-addon-info/".$key;
-        }
-        $res = self::sendRequest( $url);
-        return $res ? true : false;
+        return true;
     }
 
 
@@ -310,7 +304,7 @@ class AddonController extends Controller
     }
 
     public static function script_activation_check( $purchase_code) {
-        $url = "https://activeitzone.com/activation/verify-purchase-code/".$purchase_code;
+        $url = "".$purchase_code;
         $request_data_json = json_encode(['code' => $purchase_code]);
 
         $header = array(
@@ -333,7 +327,7 @@ class AddonController extends Controller
 
 
     public static function check_registered_addon($purchase_code) {
-        $url = "https://activation.activeitzone.com/registered-addon-list/".$purchase_code;
+        $url = "".$purchase_code;
 
         $ch = curl_init();
         
