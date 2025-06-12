@@ -2142,7 +2142,7 @@
                 </li>
                 @endcanany
 
-                <!-- System Update & Server Status -->
+                {{-- <!-- System Update & Server Status -->
                 @canany(['system_update','server_status'])
                 <li class="aiz-side-nav-item">
                     <a href="#" class="aiz-side-nav-link">
@@ -2222,7 +2222,7 @@
                         @endcan
                     </ul>
                 </li>
-                @endcanany
+                @endcanany --}}
 
                 <!-- Addon Manager -->
                 @can('manage_addons')
