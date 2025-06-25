@@ -24,6 +24,9 @@
     <meta name="description" content="@yield('meta_description', get_setting('meta_description'))" />
     <meta name="keywords" content="@yield('meta_keywords', get_setting('meta_keywords'))">
 
+    <link rel="icon" href="https://www.kideoland.com/public/uploads/all/wEp6FT2LRbWrOJLH0xSpqCMIc471PKepPOP5J3Xd.png" type="image/x-icon">
+    <link rel="icon" href="https://www.kideoland.com/public/uploads/all/wEp6FT2LRbWrOJLH0xSpqCMIc471PKepPOP5J3Xd.png" type="image/png">
+
     @yield('meta')
 
     @if (!isset($detailedProduct) && !isset($customer_product) && !isset($shop) && !isset($page) && !isset($blog))
@@ -402,7 +405,7 @@
     a[aria-label="Go to GetButton.io website"] {
         display: none !important;
     }
-    
+
 </style>
 
     <script>
@@ -628,7 +631,7 @@
             });
         }
 
-       
+
 
         function showReviewImageModal(imageUrl, imagesJson) {
             try {
@@ -958,7 +961,7 @@
                 }
             }
         </script>
-        
+
     @endif
 
     @yield('script')
