@@ -255,7 +255,7 @@ class CheckoutController extends Controller
         $address = new Address;
         $address->user_id       = $user->id;
         $address->address       = $guest_shipping_info['address'];
-        $address->country_id = $guest_shipping_info['country_id'] ?? null;
+        $address->country_id = $guest_shipping_info['country_id'] ?? 18;
         $address->state_id = $guest_shipping_info['state_id'] ?? null;
         $address->city_id = $guest_shipping_info['city_id'] ?? null;
         $address->postal_code   = $guest_shipping_info['postal_code'] ?? null;
