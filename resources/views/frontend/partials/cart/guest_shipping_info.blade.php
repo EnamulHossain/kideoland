@@ -29,7 +29,7 @@
         </div>
     </div>
 
-    <!-- Country -->
+    {{-- <!-- Country -->
     <div class="row">
         <div class="col-md-2 mt-md-2">
             <label>{{ translate('Country')}} <span class="text-danger">*</span></label>
@@ -69,7 +69,7 @@
 
             </select>
         </div>
-    </div>
+    </div> --}}
 
     @if (get_setting('google_map') == 1)
         <!-- Google Map -->
@@ -104,7 +104,7 @@
         </div>
     @endif
 
-    <!-- Postal code -->
+    {{-- <!-- Postal code -->
     <div class="row">
         <div class="col-md-2 mt-md-2">
             <label>{{ translate('Postal code')}} <span class="text-danger">*</span></label>
@@ -112,7 +112,7 @@
         <div class="col-md-10">
             <input type="text" class="form-control mb-3 rounded-0" placeholder="{{ translate('Your Postal Code')}}" name="postal_code" value="" required>
         </div>
-    </div>
+    </div> --}}
 
     <!-- Phone -->
     <div class="row">
