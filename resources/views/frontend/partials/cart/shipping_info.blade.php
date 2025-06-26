@@ -25,7 +25,7 @@
                                     <span class="fs-14 text-secondary col-md-3 col-5">{{ translate('Address') }}</span>
                                     <span class="fs-14 text-dark fw-500 ml-2 col">{{ $address->address }}</span>
                                 </div>
-                                {{-- <div class="row">
+                                <div class="row">
                                     <span class="fs-14 text-secondary col-md-3 col-5">{{ translate('Postal Code') }}</span>
                                     <span class="fs-14 text-dark fw-500 ml-2 col">{{ $address->postal_code }}</span>
                                 </div>
@@ -40,7 +40,7 @@
                                 <div class="row">
                                     <span class="fs-14 text-secondary col-md-3 col-5">{{ translate('Country') }}</span>
                                     <span class="fs-14 text-dark fw-500 ml-2 col">{{ optional($address->country)->name }}</span>
-                                </div> --}}
+                                </div>
                                 <div class="row">
                                     <span class="fs-14 text-secondary col-md-3 col-5">{{ translate('Phone') }}</span>
                                     <span class="fs-14 text-dark fw-500 ml-2 col">{{ $address->phone }}</span>

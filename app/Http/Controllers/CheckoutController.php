@@ -205,9 +205,9 @@ class CheckoutController extends Controller
             'email' => 'required|email|unique:users|max:255',
             'phone' => 'required|max:12',
             'address' => 'required|max:255',
-            'country_id' => 'nullable|Integer',
-            'state_id' => 'nullable|Integer',
-            'city_id' => 'nullable|Integer'
+            'country_id' => 'required|Integer',
+            'state_id' => 'required|Integer',
+            'city_id' => 'required|Integer'
         ]);
 
         if ($validator->fails()) {
@@ -255,9 +255,9 @@ class CheckoutController extends Controller
         $address = new Address;
         $address->user_id       = $user->id;
         $address->address       = $guest_shipping_info['address'];
-        $address->country_id = $guest_shipping_info['country_id'] ?? null;
-        $address->state_id = $guest_shipping_info['state_id'] ?? null;
-        $address->city_id = $guest_shipping_info['city_id'] ?? null;
+        $address->country_id    = $guest_shipping_info['country_id'];
+        $address->state_id      = $guest_shipping_info['state_id'];
+        $address->city_id       = $guest_shipping_info['city_id'];
         $address->postal_code   = $guest_shipping_info['postal_code'];
         $address->phone         = '+'.$guest_shipping_info['country_code'].$guest_shipping_info['phone'];
         $address->longitude     = isset($guest_shipping_info['longitude']) ? $guest_shipping_info['longitude'] : null;
