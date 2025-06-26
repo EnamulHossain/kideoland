@@ -206,8 +206,8 @@ class CheckoutController extends Controller
             'phone' => 'required|max:12',
             'address' => 'required|max:255',
             'country_id' => 'nullable|Integer',
-            'state_id' => 'required|Integer',
-            'city_id' => 'required|Integer'
+            'state_id' => 'nullable|Integer',
+            'city_id' => 'nullable|Integer'
         ]);
 
         if ($validator->fails()) {
