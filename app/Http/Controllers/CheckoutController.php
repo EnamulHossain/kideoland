@@ -205,7 +205,7 @@ class CheckoutController extends Controller
             'email' => 'required|email|unique:users|max:255',
             'phone' => 'required|max:12',
             'address' => 'required|max:255',
-            'country_id' => 'required|Integer',
+            'country_id' => 'nullable|Integer',
             'state_id' => 'required|Integer',
             'city_id' => 'required|Integer'
         ]);
