@@ -22,11 +22,11 @@ trait PreventDemoModeChanges
 
     public static function forceCreate(array $attributes)
     {
-        if (static::isActive()) {
-            flash_message(translate('Data chaning action is not allowed in demo mode.','warning'));
-            throw new Redirectingexception();
-        }
-        return static::query()->forceCreate($attributes);
+        // if (static::isActive()) {
+        //     flash_message(translate('Data chaning action is not allowed in demo mode.','warning'));
+        //     throw new Redirectingexception();
+        // }
+        // return static::query()->forceCreate($attributes);
     }
 
     public function save(array $options = [])
