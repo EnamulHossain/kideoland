@@ -21,9 +21,9 @@ class AddressController extends Controller
         $address = new Address;
         $address->user_id       = Auth::user()->id;
         $address->address       = $request->address;
-        $address->country_id    = $request->country_id;
-        $address->state_id      = $request->state_id;
-        $address->city_id       = $request->city_id;
+        $address->country_id = $guest_shipping_info['country_id'] ?? 18;
+        $address->state_id = $guest_shipping_info['state_id'] ?? 348;
+        $address->city_id = $guest_shipping_info['city_id'] ?? 491;
         $address->longitude     = $request->longitude;
         $address->latitude      = $request->latitude;
         $address->postal_code   = $request->postal_code;
