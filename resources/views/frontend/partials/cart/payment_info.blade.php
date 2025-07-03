@@ -1,10 +1,10 @@
-<div class="mb-4">
+{{-- <div class="mb-4">
     <h3 class="fs-16 fw-700 text-dark">
         {{ translate('Any additional info?') }}
     </h3>
     <textarea name="additional_info" rows="5" class="form-control rounded-0"
         placeholder="{{ translate('Type your text...') }}"></textarea>
-</div>
+</div> --}}
 <div>
     <h3 class="fs-16 fw-700 text-dark">
         {{ translate('Select a payment option') }}
