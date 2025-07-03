@@ -235,7 +235,7 @@
                                         @if($order->prepayment_confirm_status == 0 && $order->request_preorder_status == 2)
                                         <div class="pt-2rem fs-14 mb-3 ml-4">
                                             <label class="aiz-checkbox">
-                                                <input type="checkbox" required id="agree_checkbox" onchange="stepCompletionPaymentInfo()">
+                                                <input type="checkbox" required id="agree_checkbox" onchange="stepCompletionPaymentInfo()" checked>
                                                 <span class="aiz-square-check"></span>
                                                 <span>{{ translate('I agree to the') }}</span>
                                             </label>
