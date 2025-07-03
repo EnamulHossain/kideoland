@@ -64,7 +64,7 @@
                                         @include('frontend.partials.cart.payment_info', ['carts' => $carts, 'total' => $total])
 
                                         <!-- Agree Box -->
-                                        <div class="pt-2rem fs-14">
+                                        {{-- <div class="pt-2rem fs-14">
                                             <label class="aiz-checkbox">
                                                 <input type="checkbox" required id="agree_checkbox" onchange="stepCompletionPaymentInfo()">
                                                 <span class="aiz-square-check"></span>
@@ -76,7 +76,7 @@
                                                 class="fw-700">{{ translate('return policy') }}</a> &
                                             <a href="{{ route('privacypolicy') }}"
                                                 class="fw-700">{{ translate('privacy policy') }}</a>
-                                        </div>
+                                        </div> --}}
 
                                         <div class="row align-items-center pt-3 mb-4">
                                             <!-- Return to shop -->

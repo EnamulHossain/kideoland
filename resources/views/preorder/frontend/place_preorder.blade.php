@@ -48,7 +48,7 @@
                                     </div>
                                 </div>
 
-                                <!-- Agree Box -->
+                                {{-- <!-- Agree Box -->
                                 <div class="pt-2rem fs-14 mb-4">
                                         <label class="aiz-checkbox">
                                             <input type="checkbox" required id="agree_checkbox" onchange="stepCompletionPaymentInfo()"> 
@@ -58,7 +58,7 @@
                                         <a href="{{ route('terms') }}" class="fw-700">{{ translate('terms and conditions') }}</a>,
                                         <a href="{{ route('returnpolicy') }}" class="fw-700">{{ translate('return policy') }}</a> &
                                         <a href="{{ route('privacypolicy') }}" class="fw-700">{{ translate('privacy policy') }}</a>
-                                </div>
+                                </div> --}}
 
                                 <div>
                                     <div class="col-12 m-0 p-0">

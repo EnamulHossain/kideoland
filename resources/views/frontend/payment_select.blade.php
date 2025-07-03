@@ -624,7 +624,7 @@
                             </div>
 
                             <!-- Agree Box -->
-                            <div class="pt-3 px-4 fs-14">
+                            {{-- <div class="pt-3 px-4 fs-14">
                                 <label class="aiz-checkbox">
                                     <input type="checkbox" required id="agree_checkbox">
                                     <span class="aiz-square-check"></span>
@@ -636,7 +636,7 @@
                                     class="fw-700">{{ translate('return policy') }}</a> &
                                 <a href="{{ route('privacypolicy') }}"
                                     class="fw-700">{{ translate('privacy policy') }}</a>
-                            </div>
+                            </div> --}}
 
                             <div class="row align-items-center pt-3 px-4 mb-4">
                                 <!-- Return to shop -->
