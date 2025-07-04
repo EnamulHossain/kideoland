@@ -129,7 +129,6 @@ class CheckoutController extends Controller
         // if guest checkout, create user
         if(auth()->user() == null){
             $guest_user = $this->createUser($request->except('_token', 'payment_option'));
-            dd($guest_user);
             if(gettype($guest_user) == "object"){
                 $errors = $guest_user;
                 return redirect()->route('checkout')->withErrors($errors);
@@ -229,29 +228,29 @@ class CheckoutController extends Controller
         $user->save();
 
 
-        // Guest Account Opening and verification(if activated) eamil send
-        try {
-            EmailUtility::customer_registration_email('registration_from_system_email_to_customer', $user, $password);
-        } catch (\Exception $e) {
-            $success = 0;
-            $user->delete();
-        }
+        // // Guest Account Opening and verification(if activated) eamil send
+        // try {
+        //     EmailUtility::customer_registration_email('registration_from_system_email_to_customer', $user, $password);
+        // } catch (\Exception $e) {
+        //     $success = 0;
+        //     $user->delete();
+        // }
 
-        if($success == 0){
-            return $success;
-        }
+        // if($success == 0){
+        //     return $success;
+        // }
 
-        // Sending email verification Notification
-        if($isEmailVerificationEnabled == 1){
-            EmailUtility::email_verification($user, 'customer');
-        }
+        // // Sending email verification Notification
+        // if($isEmailVerificationEnabled == 1){
+        //     EmailUtility::email_verification($user, 'customer');
+        // }
 
-        // Customer Account Opening Email to Admin
-        if ((get_email_template_data('customer_reg_email_to_admin', 'status') == 1)) {
-            try {
-                EmailUtility::customer_registration_email('customer_reg_email_to_admin', $user, null);
-            } catch (\Exception $e) {}
-        }
+        // // Customer Account Opening Email to Admin
+        // if ((get_email_template_data('customer_reg_email_to_admin', 'status') == 1)) {
+        //     try {
+        //         EmailUtility::customer_registration_email('customer_reg_email_to_admin', $user, null);
+        //     } catch (\Exception $e) {}
+        // }
 
         // User Address Create
         $address = new Address;
