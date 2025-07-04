@@ -36,23 +36,77 @@
                                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
                                             <path id="Path_42357" data-name="Path 42357" d="M58,48A10,10,0,1,0,68,58,10,10,0,0,0,58,48ZM56.457,61.543a.663.663,0,0,1-.423.212.693.693,0,0,1-.428-.216l-2.692-2.692.856-.856,2.269,2.269,6-6.043.841.87Z" transform="translate(-48 -48)" fill="#9d9da6"/>
                                         </svg>
-                                        <span class="ml-2 fs-19 fw-700">{{ translate('Location') }}</span>
+                                        <span class="ml-2 fs-19 fw-700">{{ translate('Delivery Location') }}</span>
                                     </div>
                                 </div>
-                                <div class="card-body">
-                                    <div class="form-group">
-                                        <div class="radio d-flex align-items-center mb-2">
-                                            <input type="radio" id="inside_dhaka" name="location" value="inside_dhaka" checked>
-                                            <label for="inside_dhaka" class="ml-2 mb-0">{{ translate('Inside Dhaka') }}</label>
-                                        </div>
-                                        <div class="radio d-flex align-items-center">
-                                            <input type="radio" id="outside_dhaka" name="location" value="outside_dhaka">
-                                            <label for="outside_dhaka" class="ml-2 mb-0">{{ translate('Outside Dhaka') }}</label>
-                                        </div>
+                                <div class="card-body p-0">
+                                    <div class="location-options">
+                                        <!-- Inside Dhaka Option -->
+                                        <label class="location-option d-flex align-items-center justify-content-between p-3 border-bottom" for="inside_dhaka">
+                                            <div class="d-flex align-items-center">
+                                                <div class="custom-radio mr-3">
+                                                    <input type="radio" id="inside_dhaka" name="location" value="inside_dhaka" checked>
+                                                    <span class="checkmark"></span>
+                                                </div>
+                                                <div>
+                                                    <div class="fs-16 fw-600">{{ translate('Inside Dhaka') }}</div>
+                                                    <div class="fs-12 text-secondary">{{ translate('Delivery to Dhaka metropolitan area') }}</div>
+                                                </div>
+                                            </div>
+                                            <div class="fs-16 fw-700 text-primary">৳70</div>
+                                        </label>
+                                        
+                                        <!-- Outside Dhaka Option -->
+                                        <label class="location-option d-flex align-items-center justify-content-between p-3" for="outside_dhaka">
+                                            <div class="d-flex align-items-center">
+                                                <div class="custom-radio mr-3">
+                                                    <input type="radio" id="outside_dhaka" name="location" value="outside_dhaka">
+                                                    <span class="checkmark"></span>
+                                                </div>
+                                                <div>
+                                                    <div class="fs-16 fw-600">{{ translate('Outside Dhaka') }}</div>
+                                                    <div class="fs-12 text-secondary">{{ translate('Delivery to other districts') }}</div>
+                                                </div>
+                                            </div>
+                                            <div class="fs-16 fw-700 text-primary">৳120</div>
+                                        </label>
                                     </div>
                                 </div>
                             </div>
 
+                            <style>
+                                .location-option {
+                                    cursor: pointer;
+                                    transition: all 0.3s ease;
+                                }
+                                .location-option:hover {
+                                    background-color: #f8f9fa;
+                                }
+                                .custom-radio {
+                                    position: relative;
+                                    width: 20px;
+                                    height: 20px;
+                                }
+                                .custom-radio input {
+                                    position: absolute;
+                                    opacity: 0;
+                                    cursor: pointer;
+                                }
+                                .checkmark {
+                                    position: absolute;
+                                    top: 0;
+                                    left: 0;
+                                    height: 20px;
+                                    width: 20px;
+                                    background-color: #fff;
+                                    border-radius: 50%;
+                                    border: 1px solid #ddd;
+                                }
+                                .custom-radio input:checked ~ .checkmark {
+                                    background-color: #fff;
+                                    border: 6px solid #007bff;
+                                }
+                            </style>
                             <!-- Delivery Info -->
                             <div class="card rounded-0 border shadow-none" style="margin-bottom: 2rem; overflow: visible !important;">
                                 <div class="card-header border-bottom-0 py-3 py-xl-4" id="headingDeliveryInfo" type="button" data-toggle="collapse" data-target="#collapseDeliveryInfo" aria-expanded="true" aria-controls="collapseDeliveryInfo">
