@@ -214,8 +214,6 @@ class CheckoutController extends Controller
             return $validator->errors();
         }
 
-        dd($validator);
-
         $success = 1;
         $password = substr(hash('sha512', rand()), 0, 8);
         $isEmailVerificationEnabled = get_setting('email_verification');
@@ -229,6 +227,7 @@ class CheckoutController extends Controller
         $user->email_verified_at = $isEmailVerificationEnabled != 1 ? date('Y-m-d H:m:s') : null;
         $user->save();
 
+        dd($user);
 
         // Guest Account Opening and verification(if activated) eamil send
         try {
