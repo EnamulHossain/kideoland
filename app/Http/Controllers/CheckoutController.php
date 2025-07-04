@@ -134,6 +134,7 @@ class CheckoutController extends Controller
                 return redirect()->route('checkout')->withErrors($errors);
             }
 
+            dd($request->all(),$guest_user);
             if($guest_user == 0){
                 flash(translate('Please try again later.'))->warning();
                 return redirect()->route('checkout');
