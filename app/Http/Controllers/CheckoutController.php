@@ -129,6 +129,7 @@ class CheckoutController extends Controller
         // if guest checkout, create user
         if(auth()->user() == null){
             $guest_user = $this->createUser($request->except('_token', 'payment_option'));
+            dd($guest_user);
             if(gettype($guest_user) == "object"){
                 $errors = $guest_user;
                 return redirect()->route('checkout')->withErrors($errors);
