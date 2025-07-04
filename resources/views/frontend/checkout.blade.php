@@ -29,59 +29,50 @@
                                 </div>
                             </div>
 
-                            <!-- Delivery Location -->
+                            <!-- Location Selection -->
                             <div class="card rounded-0 border shadow-none" style="margin-bottom: 2rem;">
                                 <div class="card-header border-bottom-0 py-3 py-xl-4">
-                                    <h2 class="fs-19 fw-700 mb-0">{{ translate('Location') }}</h2>
+                                    <div class="d-flex align-items-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
+                                            <path id="Path_42357" data-name="Path 42357" d="M58,48A10,10,0,1,0,68,58,10,10,0,0,0,58,48ZM56.457,61.543a.663.663,0,0,1-.423.212.693.693,0,0,1-.428-.216l-2.692-2.692.856-.856,2.269,2.269,6-6.043.841.87Z" transform="translate(-48 -48)" fill="#9d9da6"/>
+                                        </svg>
+                                        <span class="ml-2 fs-19 fw-700">{{ translate('Delivery Location') }}</span>
+                                    </div>
                                 </div>
                                 <div class="card-body p-0">
-                                    <!-- Inside Dhaka Option -->
-                                    <label class="delivery-option d-flex align-items-center justify-content-between p-3 border-bottom" for="inside_dhaka">
-                                        <div class="option-content">
-                                            <h3 class="fs-16 fw-600 mb-1">{{ translate('Inside Dhaka') }}</h3>
-                                            <p class="fs-12 text-muted mb-0">{{ translate('Delivery to Dhaka metropolitan area') }}</p>
-                                        </div>
-                                        <div class="option-price fs-16 fw-700">৳70</div>
-                                        <input type="radio" id="inside_dhaka" name="location" value="inside_dhaka" checked class="position-absolute opacity-0">
-                                    </label>
-
-                                    <!-- Outside Dhaka Option -->
-                                    <label class="delivery-option d-flex align-items-center justify-content-between p-3" for="outside_dhaka">
-                                        <div class="option-content">
-                                            <h3 class="fs-16 fw-600 mb-1">{{ translate('Outside Dhaka') }}</h3>
-                                            <p class="fs-12 text-muted mb-0">{{ translate('Delivery to other districts') }}</p>
-                                        </div>
-                                        <div class="option-price fs-16 fw-700">৳120</div>
-                                        <input type="radio" id="outside_dhaka" name="location" value="outside_dhaka" class="position-absolute opacity-0">
-                                    </label>
+                                    <div class="location-options">
+                                        <!-- Inside Dhaka Option -->
+                                        <label class="location-option d-flex align-items-center justify-content-between p-3 border-bottom" for="inside_dhaka">
+                                            <div class="d-flex align-items-center">
+                                                <div class="custom-radio mr-3">
+                                                    <input type="radio" id="inside_dhaka" name="location" value="inside_dhaka" checked>
+                                                    <span class="checkmark"></span>
+                                                </div>
+                                                <div>
+                                                    <div class="fs-16 fw-600">{{ translate('Inside Dhaka') }}</div>
+                                                    <div class="fs-12 text-secondary">{{ translate('Delivery to Dhaka metropolitan area') }}</div>
+                                                </div>
+                                            </div>
+                                            <div class="fs-16 fw-700 text-primary">৳70</div>
+                                        </label>
+                                        
+                                        <!-- Outside Dhaka Option -->
+                                        <label class="location-option d-flex align-items-center justify-content-between p-3" for="outside_dhaka">
+                                            <div class="d-flex align-items-center">
+                                                <div class="custom-radio mr-3">
+                                                    <input type="radio" id="outside_dhaka" name="location" value="outside_dhaka">
+                                                    <span class="checkmark"></span>
+                                                </div>
+                                                <div>
+                                                    <div class="fs-16 fw-600">{{ translate('Outside Dhaka') }}</div>
+                                                    <div class="fs-12 text-secondary">{{ translate('Delivery to other districts') }}</div>
+                                                </div>
+                                            </div>
+                                            <div class="fs-16 fw-700 text-primary">৳120</div>
+                                        </label>
+                                    </div>
                                 </div>
                             </div>
-
-                            <style>
-                                .delivery-option {
-                                    display: flex;
-                                    align-items: center;
-                                    cursor: pointer;
-                                    transition: background-color 0.2s;
-                                    position: relative;
-                                }
-                                .delivery-option:hover {
-                                    background-color: #f8f9fa;
-                                }
-                                .option-content {
-                                    flex-grow: 1;
-                                }
-                                .option-price {
-                                    color: var(--primary);
-                                    margin-left: 1rem;
-                                }
-                                input[type="radio"]:checked + .delivery-option {
-                                    background-color: #f0f7ff;
-                                }
-                                input[type="radio"]:checked + .delivery-option .option-price {
-                                    color: var(--primary-dark);
-                                }
-                            </style>
 
                             <style>
                                 .location-option {
