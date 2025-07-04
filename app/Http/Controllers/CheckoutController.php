@@ -202,7 +202,7 @@ class CheckoutController extends Controller
     {
         $validator = Validator::make($guest_shipping_info, [
             'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users|max:255',
+            'email' => 'required|email|max:255',
             'phone' => 'required|max:12',
             'address' => 'required|max:255',
             'country_id' => 'nullable|Integer',
