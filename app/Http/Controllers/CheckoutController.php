@@ -200,7 +200,6 @@ class CheckoutController extends Controller
 
     public function createUser($guest_shipping_info)
     {
-        dd($guest_shipping_info);
         $validator = Validator::make($guest_shipping_info, [
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255',
@@ -210,10 +209,11 @@ class CheckoutController extends Controller
             'state_id' => 'nullable|Integer',
             'city_id' => 'nullable|Integer'
         ]);
-
+        
         if ($validator->fails()) {
             return $validator->errors();
         }
+        dd($validator);
 
         $success = 1;
         $password = substr(hash('sha512', rand()), 0, 8);
