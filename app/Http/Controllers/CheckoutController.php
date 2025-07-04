@@ -213,7 +213,6 @@ class CheckoutController extends Controller
         if ($validator->fails()) {
             return $validator->errors();
         }
-        dd($validator);
 
         $success = 1;
         $password = substr(hash('sha512', rand()), 0, 8);
@@ -227,6 +226,8 @@ class CheckoutController extends Controller
         $user->password = Hash::make($password);
         $user->email_verified_at = $isEmailVerificationEnabled != 1 ? date('Y-m-d H:m:s') : null;
         $user->save();
+
+        dd($user);
 
         // Guest Account Opening and verification(if activated) eamil send
         try {
