@@ -200,6 +200,7 @@ class CheckoutController extends Controller
 
     public function createUser($guest_shipping_info)
     {
+        dd($guest_shipping_info);
         $validator = Validator::make($guest_shipping_info, [
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255',
