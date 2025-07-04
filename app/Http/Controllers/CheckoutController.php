@@ -125,7 +125,8 @@ class CheckoutController extends Controller
 
     //check the selected payment gateway and redirect to that controller accordingly
     public function checkout(Request $request)
-    {
+    {   
+        dd($request->all());
         // if guest checkout, create user
         if(auth()->user() == null){
             $guest_user = $this->createUser($request->except('_token', 'payment_option'));
