@@ -71,7 +71,6 @@
         </div>
     </div> --}}
 
-    
     @if (get_setting('google_map') == 1)
         <!-- Google Map -->
         <div class="row mt-3 mb-3">
