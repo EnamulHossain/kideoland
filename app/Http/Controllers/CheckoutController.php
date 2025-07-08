@@ -32,11 +32,11 @@ class CheckoutController extends Controller
 
     public function index(Request $request)
     {
-        if(get_setting('guest_checkout_activation') == 0 && auth()->user() == null){
+        if (get_setting('guest_checkout_activation') == 0 && auth()->user() == null) {
             return redirect()->route('user.login');
         }
 
-        if(auth()->check() && !$request->user()->hasVerifiedEmail()){
+        if (auth()->check() && !$request->user()->hasVerifiedEmail()) {
             return redirect()->route('verification.notice');
         }
 
@@ -49,20 +49,19 @@ class CheckoutController extends Controller
             $user_id = Auth::user()->id;
             $carts = Cart::where('user_id', $user_id)->active()->get();
             $addresses = Address::where('user_id', $user_id)->get();
-            if(count($addresses)){
+            if (count($addresses)) {
                 $address = $addresses->toQuery()->first();
                 $address_id = $address->id;
                 $country_id = $address->country_id;
                 $city_id = $address->city_id;
-                $default_address =$addresses->toQuery()->where('set_default', 1)->first();
-                if($default_address != null){
+                $default_address = $addresses->toQuery()->where('set_default', 1)->first();
+                if ($default_address != null) {
                     $address_id = $default_address->id;
                     $country_id = $default_address->country_id;
                     $city_id = $default_address->city_id;
                 }
             }
-        }
-        else {
+        } else {
             $temp_user_id = $request->session()->get('temp_user_id');
             $carts = ($temp_user_id != null) ? Cart::where('temp_user_id', $temp_user_id)->active()->get() : [];
         }
@@ -83,11 +82,11 @@ class CheckoutController extends Controller
             $carrier_list = array();
             if (get_setting('shipping_type') == 'carrier_wise_shipping') {
                 $default_shipping_type = 'carrier';
-               // $zone = $country_id != 0 ? Country::where('id', $country_id)->first()->zone_id : 0;
-               $zone = $country_id != 0 ? Country::where('id', $country_id)->where('status', 1)->first()->zone_id ?? 0 : 0;
+                // $zone = $country_id != 0 ? Country::where('id', $country_id)->first()->zone_id : 0;
+                $zone = $country_id != 0 ? Country::where('id', $country_id)->where('status', 1)->first()->zone_id ?? 0 : 0;
 
                 $carrier_query = Carrier::where('status', 1);
-                $carrier_query->whereIn('id',function ($query) use ($zone) {
+                $carrier_query->whereIn('id', function ($query) use ($zone) {
                     $query->select('carrier_id')->from('carrier_range_prices')
                         ->where('zone_id', $zone);
                 })->orWhere('free_shipping', 1);
@@ -125,16 +124,16 @@ class CheckoutController extends Controller
 
     //check the selected payment gateway and redirect to that controller accordingly
     public function checkout(Request $request)
-    {   
+    {
         // if guest checkout, create user
-        if(auth()->user() == null){
+        if (auth()->user() == null) {
             $guest_user = $this->createUser($request->except('_token', 'payment_option'));
-            if(gettype($guest_user) == "object"){
+            if (gettype($guest_user) == "object") {
                 $errors = $guest_user;
                 return redirect()->route('checkout')->withErrors($errors);
             }
 
-            if($guest_user == 0){
+            if ($guest_user == 0) {
                 flash(translate('Please try again later.'))->warning();
                 return redirect()->route('checkout');
             }
@@ -149,9 +148,9 @@ class CheckoutController extends Controller
 
 
         // Minumum order amount check
-        if(get_setting('minimum_order_amount_check') == 1){
+        if (get_setting('minimum_order_amount_check') == 1) {
             $subtotal = 0;
-            foreach ($carts as $key => $cartItem){
+            foreach ($carts as $key => $cartItem) {
                 $product = Product::find($cartItem['product_id']);
                 $subtotal += cart_product_price($cartItem, $product, false, false) * $cartItem['quantity'];
             }
@@ -164,7 +163,7 @@ class CheckoutController extends Controller
 
         (new OrderController)->store($request);
 
-        if(count($carts) > 0){
+        if (count($carts) > 0) {
             $carts->toQuery()->delete();
         }
 
@@ -178,8 +177,7 @@ class CheckoutController extends Controller
             $decorator = __NAMESPACE__ . '\\Payment\\' . str_replace(' ', '', ucwords(str_replace('_', ' ', $request->payment_option))) . "Controller";
             if (class_exists($decorator)) {
                 return (new $decorator)->pay($request);
-            }
-            else {
+            } else {
                 $combined_order = CombinedOrder::findOrFail($request->session()->get('combined_order_id'));
                 $manual_payment_data = array(
                     'name'   => $request->payment_option,
@@ -209,7 +207,7 @@ class CheckoutController extends Controller
             'state_id' => 'nullable|Integer',
             'city_id' => 'nullable|Integer'
         ]);
-        
+
         if ($validator->fails()) {
             return $validator->errors();
         }
@@ -222,7 +220,7 @@ class CheckoutController extends Controller
         $user = new User();
         $user->name = $guest_shipping_info['name'];
         $user->email = $guest_shipping_info['email'];
-        $user->phone = addon_is_activated('otp_system') ? '+'.$guest_shipping_info['country_code'].$guest_shipping_info['phone'] : null;
+        $user->phone = addon_is_activated('otp_system') ? '+' . $guest_shipping_info['country_code'] . $guest_shipping_info['phone'] : null;
         $user->password = Hash::make($password);
         $user->email_verified_at = $isEmailVerificationEnabled != 1 ? date('Y-m-d H:m:s') : null;
         $user->save();
@@ -252,6 +250,8 @@ class CheckoutController extends Controller
         //     } catch (\Exception $e) {}
         // }
 
+        // asdfasdfasdfasd
+
         // User Address Create
         $address = new Address;
         $address->user_id       = $user->id;
@@ -260,19 +260,19 @@ class CheckoutController extends Controller
         $address->state_id = $guest_shipping_info['state_id'] ?? 348;
         $address->city_id = $guest_shipping_info['city_id'] ?? 491;
         $address->postal_code   = $guest_shipping_info['postal_code'] ?? null;
-        $address->phone         = '+'.$guest_shipping_info['country_code'].$guest_shipping_info['phone'];
+        $address->phone         = '+' . $guest_shipping_info['country_code'] . $guest_shipping_info['phone'];
         $address->longitude     = isset($guest_shipping_info['longitude']) ? $guest_shipping_info['longitude'] : null;
         $address->latitude      = isset($guest_shipping_info['latitude']) ? $guest_shipping_info['latitude'] : null;
         $address->save();
 
         $carts = Cart::where('temp_user_id', session('temp_user_id'))->get();
         $carts->toQuery()->update([
-                'user_id' => $user->id,
-                'temp_user_id' => null
-            ]);
+            'user_id' => $user->id,
+            'temp_user_id' => null
+        ]);
         $carts->toQuery()->active()->update([
-                'address_id' => $address->id
-            ]);
+            'address_id' => $address->id
+        ]);
 
         auth()->login($user);
 
@@ -306,15 +306,14 @@ class CheckoutController extends Controller
     // ================ Will not use after single page checkout ========[start]
     public function get_shipping_info(Request $request)
     {
-        if(get_setting('guest_checkout_activation') == 0 && auth()->user() == null){
+        if (get_setting('guest_checkout_activation') == 0 && auth()->user() == null) {
             return redirect()->route('user.login');
         }
 
         if (auth()->user() != null) {
             $user_id = Auth::user()->id;
             $carts = Cart::where('user_id', $user_id)->get();
-        }
-        else {
+        } else {
             $temp_user_id = $request->session()->get('temp_user_id');
             $carts = ($temp_user_id != null) ? Cart::where('temp_user_id', $temp_user_id)->get() : [];
         }
@@ -331,12 +330,12 @@ class CheckoutController extends Controller
         $auth_user = auth()->user();
         $temp_user_id = $request->session()->has('temp_user_id') ? $request->session()->get('temp_user_id') : null;
 
-        if($auth_user == null && get_setting('guest_checkout_activation') == 0){
+        if ($auth_user == null && get_setting('guest_checkout_activation') == 0) {
             return redirect()->route('user.login');
         }
 
-        if($auth_user != null){
-            if($request->address_id == null){
+        if ($auth_user != null) {
+            if ($request->address_id == null) {
                 flash(translate("Please add shipping address"))->warning();
                 return redirect()->route('checkout.shipping_info');
             }
@@ -346,12 +345,13 @@ class CheckoutController extends Controller
                 $cartItem->address_id = $request->address_id;
                 $cartItem->save();
             }
-        }
-        else{
-            if(get_setting('guest_checkout_activation') == 1){
-                if($request->name == null || $request->email == null || $request->address == null ||
+        } else {
+            if (get_setting('guest_checkout_activation') == 1) {
+                if (
+                    $request->name == null || $request->email == null || $request->address == null ||
                     $request->country_id == null || $request->state_id == null || $request->city_id == null ||
-                        $request->postal_code == null || $request->phone == null) {
+                    $request->postal_code == null || $request->phone == null
+                ) {
                     flash(translate("Please add shipping address"))->warning();
                     return redirect()->route('checkout.shipping_info');
                 }
@@ -362,7 +362,7 @@ class CheckoutController extends Controller
                 $shipping_info['state_id'] = $request->state_id;
                 $shipping_info['city_id'] = $request->city_id;
                 $shipping_info['postal_code'] = $request->postal_code;
-                $shipping_info['phone'] = '+'.$request->country_code.$request->phone;
+                $shipping_info['phone'] = '+' . $request->country_code . $request->phone;
                 $shipping_info['longitude'] = $request->longitude;
                 $shipping_info['latitude'] = $request->latitude;
                 $request->session()->put('guest_shipping_info', $shipping_info);
@@ -378,14 +378,14 @@ class CheckoutController extends Controller
         $deliveryInfo = [];
 
         // Logged In User Delivery info
-        if($auth_user != null){
+        if ($auth_user != null) {
             $address = Address::where('id', $carts[0]['address_id'])->first();
             $deliveryInfo['country_id'] = $address->country_id;
             $deliveryInfo['city_id'] = $address->city_id;
         }
 
         // Guest User Delivery info
-        elseif($temp_user_id != null){
+        elseif ($temp_user_id != null) {
             $deliveryInfo['country_id'] = $request->country_id;
             $deliveryInfo['city_id'] = $request->city_id;
         }
@@ -396,7 +396,7 @@ class CheckoutController extends Controller
             $zone = Country::where('id', $country_id)->first()->zone_id;
 
             $carrier_query = Carrier::where('status', 1);
-            $carrier_query->whereIn('id',function ($query) use ($zone) {
+            $carrier_query->whereIn('id', function ($query) use ($zone) {
                 $query->select('carrier_id')->from('carrier_range_prices')
                     ->where('zone_id', $zone);
             })->orWhere('free_shipping', 1);
@@ -411,8 +411,7 @@ class CheckoutController extends Controller
         $authUser = auth()->user();
         $tempUser = $request->session()->has('temp_user_id') ? $request->session()->get('temp_user_id') : null;
         $carts = auth()->user() != null ?
-                Cart::where('user_id', $authUser->id)->get() :
-                ($tempUser != null ? Cart::where('temp_user_id', $request->session()->get('temp_user_id'))->get() : null);
+            Cart::where('user_id', $authUser->id)->get() : ($tempUser != null ? Cart::where('temp_user_id', $request->session()->get('temp_user_id'))->get() : null);
 
         if ($carts->isEmpty()) {
             flash(translate('Your cart is empty'))->warning();
@@ -423,13 +422,13 @@ class CheckoutController extends Controller
         $deliveryInfo = [];
 
         // Logged In User Delivery info
-        if($authUser != null){
+        if ($authUser != null) {
             $deliveryInfo['country_id'] = $shipping_info->country_id;
             $deliveryInfo['city_id'] = $shipping_info->city_id;
         }
 
         // Guest User Shipping info
-        elseif($tempUser != null){
+        elseif ($tempUser != null) {
             $deliveryInfo['country_id'] = Session::get('guest_shipping_info')['country_id'];
             $deliveryInfo['city_id'] = Session::get('guest_shipping_info')['city_id'];
         }
@@ -485,15 +484,14 @@ class CheckoutController extends Controller
 
         // if the Coupon type is Welcome base, check the user has this coupon or not
         $canUseCoupon = true;
-        if($coupon && $coupon->type == 'welcome_base'){
-            if($user != null) {
+        if ($coupon && $coupon->type == 'welcome_base') {
+            if ($user != null) {
                 // $userCoupon = user assigned coupon
                 $userCoupon = $user->userCoupon;
-                if(!$userCoupon){
+                if (!$userCoupon) {
                     $canUseCoupon = false;
                 }
-            }
-            else {
+            } else {
                 $canUseCoupon = false;
             }
         }
@@ -501,13 +499,12 @@ class CheckoutController extends Controller
         if ($coupon != null && $canUseCoupon) {
 
             //  Coupon expiry Check
-            if($coupon->type != 'welcome_base') {
+            if ($coupon->type != 'welcome_base') {
                 $validationDateCheckCondition  = strtotime(date('d-m-Y')) >= $coupon->start_date && strtotime(date('d-m-Y')) <= $coupon->end_date;
-            }
-            else {
+            } else {
                 $validationDateCheckCondition = false;
-                if($userCoupon){
-                    $validationDateCheckCondition  = $userCoupon->expiry_date >= strtotime(date('d-m-Y H:i:s')) ;
+                if ($userCoupon) {
+                    $validationDateCheckCondition  = $userCoupon->expiry_date >= strtotime(date('d-m-Y H:i:s'));
                 }
             }
             if ($validationDateCheckCondition) {
@@ -515,8 +512,8 @@ class CheckoutController extends Controller
                     $coupon_details = json_decode($coupon->details);
 
                     $user_carts = $user != null ?
-                            Cart::where('user_id', $user->id)->where('owner_id', $coupon->user_id)->active()->get() :
-                            Cart::where('owner_id', $coupon->user_id)->where('temp_user_id', $temp_user)->active()->get();
+                        Cart::where('user_id', $user->id)->where('owner_id', $coupon->user_id)->active()->get() :
+                        Cart::where('owner_id', $coupon->user_id)->where('temp_user_id', $temp_user)->active()->get();
 
                     $coupon_discount = 0;
 
@@ -540,12 +537,10 @@ class CheckoutController extends Controller
                             } elseif ($coupon->discount_type == 'amount') {
                                 $coupon_discount = $coupon->discount;
                             }
-                        }
-                        elseif ($coupon->type == 'welcome_base' && $sum >= $userCoupon->min_buy)  {
+                        } elseif ($coupon->type == 'welcome_base' && $sum >= $userCoupon->min_buy) {
                             $coupon_discount  = $userCoupon->discount_type == 'percent' ?  (($sum * $userCoupon->discount) / 100) : $userCoupon->discount;
                         }
-                    }
-                    elseif ($coupon->type == 'product_base') {
+                    } elseif ($coupon->type == 'product_base') {
                         foreach ($user_carts as $key => $cartItem) {
                             $product = Product::find($cartItem['product_id']);
                             foreach ($coupon_details as $key => $coupon_detail) {
@@ -597,7 +592,7 @@ class CheckoutController extends Controller
         // $shipping_info = Address::where('id', $carts[0]['address_id'])->first();
 
         $returnHTML = view('frontend.partials.cart.cart_summary', compact('coupon', 'carts', 'proceed'))->render();
-        return response()->json(array('response_message' => $response_message, 'html'=>$returnHTML));
+        return response()->json(array('response_message' => $response_message, 'html' => $returnHTML));
     }
 
     public function remove_coupon_code(Request $request)
@@ -632,8 +627,8 @@ class CheckoutController extends Controller
         Session::forget('club_point');
         Session::forget('combined_order_id');
 
-        foreach($combined_order->orders as $order){
-            if($order->notified == 0){
+        foreach ($combined_order->orders as $order) {
+            if ($order->notified == 0) {
                 NotificationUtility::sendOrderPlacedNotification($order);
                 $order->notified = 1;
                 $order->save();
@@ -643,10 +638,11 @@ class CheckoutController extends Controller
         return view('frontend.order_confirmed', compact('combined_order'));
     }
 
-    public function guestCustomerInfoCheck(Request $request){
+    public function guestCustomerInfoCheck(Request $request)
+    {
         $user = addon_is_activated('otp_system') ?
-                User::where('email', $request->email)->orWhere('phone','+'.$request->phone)->first() :
-                User::where('email', $request->email)->first();
+            User::where('email', $request->email)->orWhere('phone', '+' . $request->phone)->first() :
+            User::where('email', $request->email)->first();
         return ($user != null) ? true : false;
     }
 
@@ -659,17 +655,17 @@ class CheckoutController extends Controller
         $shipping_info = array();
 
         $carts = $user != null ?
-                Cart::where('user_id', $user->id)->active()->get() :
-                Cart::where('temp_user_id', $request->session()->get('temp_user_id'))->active()->get();
+            Cart::where('user_id', $user->id)->active()->get() :
+            Cart::where('temp_user_id', $request->session()->get('temp_user_id'))->active()->get();
 
         $carts->toQuery()->update(['address_id' => $request->address_id]);
 
         $country_id = $user != null ?
-                    Address::findOrFail($request->address_id)->country_id :
-                    $request->address_id;
+            Address::findOrFail($request->address_id)->country_id :
+            $request->address_id;
         $city_id = $user != null ?
-                    Address::findOrFail($request->address_id)->city_id :
-                    $request->city_id;
+            Address::findOrFail($request->address_id)->city_id :
+            $request->city_id;
         $shipping_info['country_id'] = $country_id;
         $shipping_info['city_id'] = $city_id;
 
@@ -680,7 +676,7 @@ class CheckoutController extends Controller
             $zone = $country_id != 0 ? Country::where('id', $country_id)->where('status', 1)->first()?->zone_id ?? 0 : 0;
 
             $carrier_query = Carrier::where('status', 1);
-            $carrier_query->whereIn('id',function ($query) use ($zone) {
+            $carrier_query->whereIn('id', function ($query) use ($zone) {
                 $query->select('carrier_id')->from('carrier_range_prices')
                     ->where('zone_id', $zone);
             })->orWhere('free_shipping', 1);
@@ -722,8 +718,7 @@ class CheckoutController extends Controller
 
         if ($user != null) {
             $carts = Cart::where('user_id', $user->id)->active()->get();
-        }
-        else {
+        } else {
             $temp_user_id = $request->session()->get('temp_user_id');
             $carts = ($temp_user_id != null) ? Cart::where('temp_user_id', $temp_user_id)->active()->get() : [];
         }
@@ -731,9 +726,9 @@ class CheckoutController extends Controller
         $user_carts = $carts->toQuery()->where('owner_id', $request->user_id)->get();
 
         $country_id = $user != null ?
-                    Address::findOrFail($carts[0]->address_id)->country_id : $request->country_id;
+            Address::findOrFail($carts[0]->address_id)->country_id : $request->country_id;
         $city_id = $user != null ?
-                    Address::findOrFail($carts[0]->address_id)->city_id : $request->city_id;
+            Address::findOrFail($carts[0]->address_id)->city_id : $request->city_id;
         $shipping_info['country_id'] = $country_id;
         $shipping_info['city_id'] = $city_id;
 
@@ -764,9 +759,10 @@ class CheckoutController extends Controller
         return view('frontend.partials.cart.cart_summary', compact('carts', 'proceed'))->render();
     }
 
-    public function orderRePayment(Request $request){
+    public function orderRePayment(Request $request)
+    {
         $order = Order::findOrFail($request->order_id);
-        if($order != null){
+        if ($order != null) {
             $request->session()->put('payment_type', 'order_re_payment');
             $data['order_id'] = $order->id;
             $data['payment_method'] = $request->payment_option;
@@ -776,8 +772,7 @@ class CheckoutController extends Controller
             $decorator = __NAMESPACE__ . '\\Payment\\' . str_replace(' ', '', ucwords(str_replace('_', ' ', $request->payment_option))) . "Controller";
             if (class_exists($decorator)) {
                 return (new $decorator)->pay($request);
-            }
-            else {
+            } else {
                 $manual_payment_data = array(
                     'name'   => $request->payment_option,
                     'amount' => $order->grand_total,
@@ -807,7 +802,7 @@ class CheckoutController extends Controller
         $order->save();
         calculateCommissionAffilationClubPoint($order);
 
-        if($order->notified == 0){
+        if ($order->notified == 0) {
             NotificationUtility::sendOrderPlacedNotification($order);
             $order->notified = 1;
             $order->save();
