@@ -140,9 +140,6 @@ class CheckoutController extends Controller
             }
         }
 
-        dd($guest_user);
-
-
         if ($request->payment_option == null) {
             flash(translate('There is no payment option is selected.'))->warning();
             return redirect()->route('checkout');
