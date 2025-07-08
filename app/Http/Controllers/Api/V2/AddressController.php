@@ -27,13 +27,13 @@ class AddressController extends Controller
         $address->address = $request->address;
         $address->country_id = $guest_shipping_info['country_id'] ?? 18;
         $address->state_id = $guest_shipping_info['state_id'] ?? 348;
-        $address->city_id = $guest_shipping_info['city_id'] ?? 491;
+        if (request()->location == 'inside_dhaka') {
+            $address->city_id = $guest_shipping_info['city_id'] ?? 491;
+        } else {
+            $address->city_id = $guest_shipping_info['city_id'] ?? 345;
+        }
         $address->postal_code = $request->postal_code;
-        $addif (request()->location == 'inside_dhaka') {
-    $address->city_id = $guest_shipping_info['city_id'] ?? 491;
-} else {
-    $address->city_id = $guest_shipping_info['city_id'] ?? 345;
-}
+        $address->phone = $request->phone;
         $address->save();
 
         return response()->json([

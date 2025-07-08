@@ -359,12 +359,11 @@ class AuthController extends Controller
         $address->address       = $request->address;
         $address->country_id = $guest_shipping_info['country_id'] ?? 18;
         $address->state_id = $guest_shipping_info['state_id'] ?? 348;
-        $addif (request()->location == 'inside_dhaka') {
-    $address->city_id = $guest_shipping_info['city_id'] ?? 491;
-} else {
-    $address->city_id = $guest_shipping_info['city_id'] ?? 345;
-}
-        $address->postal_code   = $request->postal_code;
+        if (request()->location == 'inside_dhaka') {
+            $address->city_id = $guest_shipping_info['city_id'] ?? 491;
+        } else {
+            $address->city_id = $guest_shipping_info['city_id'] ?? 345;
+        }        $address->postal_code   = $request->postal_code;
         $address->phone         = $request->phone;
         $address->longitude     = $request->longitude;
         $address->latitude      = $request->latitude;
