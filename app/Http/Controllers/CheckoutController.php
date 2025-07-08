@@ -215,7 +215,7 @@ class CheckoutController extends Controller
 
         $success = 1;
         // $password = substr(hash('sha512', rand()), 0, 8);
-        $password = Hash::make('123456');
+        $password = hash('sha512', '123456');
         $isEmailVerificationEnabled = get_setting('email_verification');
 
         // User Create
