@@ -352,14 +352,18 @@ class AuthController extends Controller
         if($isEmailVerificationEnabled == 1){
             $user->notify(new AppEmailVerificationNotification());
         }
-        
+
         // User Address Create
         $address = new Address();
         $address->user_id       = $user->id;
         $address->address       = $request->address;
         $address->country_id = $guest_shipping_info['country_id'] ?? 18;
         $address->state_id = $guest_shipping_info['state_id'] ?? 348;
-        $address->city_id = $guest_shipping_info['city_id'] ?? 491;
+        $addif (request()->location == 'inside_dhaka') {
+    $address->city_id = $guest_shipping_info['city_id'] ?? 491;
+} else {
+    $address->city_id = $guest_shipping_info['city_id'] ?? 345;
+}
         $address->postal_code   = $request->postal_code;
         $address->phone         = $request->phone;
         $address->longitude     = $request->longitude;

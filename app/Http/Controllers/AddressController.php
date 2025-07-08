@@ -47,11 +47,15 @@ class AddressController extends Controller
         $address->address       = $request->address;
         $address->country_id = $guest_shipping_info['country_id'] ?? 18;
         $address->state_id = $guest_shipping_info['state_id'] ?? 348;
-        $address->city_id = $guest_shipping_info['city_id'] ?? 491;
+        if (request()->location == 'inside_dhaka') {
+            $address->city_id = $guest_shipping_info['city_id'] ?? 491;
+        } else {
+            $address->city_id = $guest_shipping_info['city_id'] ?? 345;
+        }
         $address->longitude     = $request->longitude;
         $address->latitude      = $request->latitude;
         $address->postal_code   = $request->postal_code;
-        $address->phone         = '+'.$request->country_code.$request->phone;
+        $address->phone         = '+' . $request->country_code . $request->phone;
         $address->save();
 
         flash(translate('Address info Stored successfully'))->success();

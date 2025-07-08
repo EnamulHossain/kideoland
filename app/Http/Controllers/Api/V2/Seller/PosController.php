@@ -82,7 +82,7 @@ class PosController extends Controller
         $shop = auth()->user()->shop;
       $data=  $shop->thermal_printer_width;
         return $this->success($data);
-        
+
     }
 
     public function createShippingAddress(Request $request)
@@ -94,7 +94,11 @@ class PosController extends Controller
         $address->state_id = $guest_shipping_info['state_id'] ?? 348;
         $address->city_id = $guest_shipping_info['city_id'] ?? 491;
         $address->postal_code = $request->postal_code;
-        $address->phone = $request->phone;
+        $addif (request()->location == 'inside_dhaka') {
+    $address->city_id = $guest_shipping_info['city_id'] ?? 491;
+} else {
+    $address->city_id = $guest_shipping_info['city_id'] ?? 345;
+}
         $address->save();
 
         return response()->json([
