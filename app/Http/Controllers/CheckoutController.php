@@ -126,7 +126,6 @@ class CheckoutController extends Controller
     public function checkout(Request $request)
     {
 
-        dd($request->all());
         // if guest checkout, create user
         if (auth()->user() == null) {
             $guest_user = $this->createUser($request->except('_token', 'payment_option'));
@@ -140,6 +139,9 @@ class CheckoutController extends Controller
                 return redirect()->route('checkout');
             }
         }
+
+        dd($guest_user);
+
 
         if ($request->payment_option == null) {
             flash(translate('There is no payment option is selected.'))->warning();
@@ -260,10 +262,10 @@ class CheckoutController extends Controller
         $address->address       = $guest_shipping_info['address'];
         $address->country_id = $guest_shipping_info['country_id'] ?? 18;
         $address->state_id = $guest_shipping_info['state_id'] ?? 348;
-        if (request()->location == 'inside_dhaka') {
-            $address->city_id = $guest_shipping_info['city_id'] ?? 491;
-        } else {
+        if (request()->location == 'outside_dhaka') {
             $address->city_id = $guest_shipping_info['city_id'] ?? 345;
+        } else {
+            $address->city_id = $guest_shipping_info['city_id'] ?? 491;
         }
         $address->postal_code   = $guest_shipping_info['postal_code'] ?? null;
         $address->phone         = '+' . $guest_shipping_info['country_code'] . $guest_shipping_info['phone'];
