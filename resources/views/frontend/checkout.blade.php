@@ -1,7 +1,5 @@
 @extends('frontend.layouts.app')
-
 @section('content')
-
     <section class="my-4 gry-bg">
         <div class="container">
             <div class="row cols-xs-space cols-sm-space cols-md-space">
@@ -10,6 +8,13 @@
                         @csrf
 
                         <div class="accordion" id="accordioncCheckoutInfo">
+                            <div class="card rounded-0 border shadow-none" style="margin-bottom: 2rem; overflow: visible !important;">
+                                <div id="collapseDeliveryInfo" class="collapse show" aria-labelledby="headingDeliveryInfo" data-parent="#accordioncCheckoutInfo">
+                                    <div class="card-body" id="delivery_info">
+                                        @include('frontend.partials.cart.delivery_info', ['carts' => $carts, 'carrier_list' => $carrier_list, 'shipping_info' => $shipping_info])
+                                    </div>
+                                </div>
+                            </div>
 
                             <!-- Shipping Info -->
                             <div class="card rounded-0 border shadow-none" style="margin-bottom: 2rem;">
@@ -25,51 +30,6 @@
                                 <div id="collapseShippingInfo" class="collapse show" aria-labelledby="headingShippingInfo" data-parent="#accordioncCheckoutInfo">
                                     <div class="card-body" id="shipping_info">
                                        @include('frontend.partials.cart.shipping_info', ['address_id' => $address_id])
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Location Selection -->
-                            <div class="card rounded-0 border shadow-none" style="margin-bottom: 2rem;">
-                                <div class="card-header border-bottom-0 py-3 py-xl-4">
-                                    <div class="d-flex align-items-center">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
-                                            <path id="Path_42357" data-name="Path 42357" d="M58,48A10,10,0,1,0,68,58,10,10,0,0,0,58,48ZM56.457,61.543a.663.663,0,0,1-.423.212.693.693,0,0,1-.428-.216l-2.692-2.692.856-.856,2.269,2.269,6-6.043.841.87Z" transform="translate(-48 -48)" fill="#9d9da6"/>
-                                        </svg>
-                                        <span class="ml-2 fs-19 fw-700">{{ translate('Location') }}</span>
-                                    </div>
-                                </div>
-                                <div class="card-body p-0">
-                                    <div class="location-options">
-                                        <!-- Inside Dhaka Option -->
-                                        <label class="location-option d-flex align-items-center justify-content-between p-3 border-bottom" for="inside_dhaka">
-                                            <div class="d-flex align-items-center">
-                                                <div class="custom-radio mr-3">
-                                                    <input type="radio" id="inside_dhaka" name="location" value="inside_dhaka" checked>
-                                                    <span class="checkmark"></span>
-                                                </div>
-                                                <div>
-                                                    <div class="fs-16 fw-600">{{ translate('Inside Dhaka') }}</div>
-                                                    <div class="fs-12 text-secondary">{{ translate('Delivery to Dhaka metropolitan area') }}</div>
-                                                </div>
-                                            </div>
-                                            <div class="fs-16 fw-700 text-primary">৳70</div>
-                                        </label>
-                                        
-                                        <!-- Outside Dhaka Option -->
-                                        <label class="location-option d-flex align-items-center justify-content-between p-3" for="outside_dhaka">
-                                            <div class="d-flex align-items-center">
-                                                <div class="custom-radio mr-3">
-                                                    <input type="radio" id="outside_dhaka" name="location" value="outside_dhaka">
-                                                    <span class="checkmark"></span>
-                                                </div>
-                                                <div>
-                                                    <div class="fs-16 fw-600">{{ translate('Outside Dhaka') }}</div>
-                                                    <div class="fs-12 text-secondary">{{ translate('Delivery to other districts') }}</div>
-                                                </div>
-                                            </div>
-                                            <div class="fs-16 fw-700 text-primary">৳120</div>
-                                        </label>
                                     </div>
                                 </div>
                             </div>
@@ -108,22 +68,22 @@
                                 }
                             </style>
                             <!-- Delivery Info -->
-                            <div class="card rounded-0 border shadow-none" style="margin-bottom: 2rem; overflow: visible !important;">
-                                <div class="card-header border-bottom-0 py-3 py-xl-4" id="headingDeliveryInfo" type="button" data-toggle="collapse" data-target="#collapseDeliveryInfo" aria-expanded="true" aria-controls="collapseDeliveryInfo">
-                                    <div class="d-flex align-items-center">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
-                                            <path id="Path_42357" data-name="Path 42357" d="M58,48A10,10,0,1,0,68,58,10,10,0,0,0,58,48ZM56.457,61.543a.663.663,0,0,1-.423.212.693.693,0,0,1-.428-.216l-2.692-2.692.856-.856,2.269,2.269,6-6.043.841.87Z" transform="translate(-48 -48)" fill="#9d9da6"/>
-                                        </svg>
-                                        <span class="ml-2 fs-19 fw-700">{{ translate('Delivery Info') }}</span>
-                                    </div>
-                                    <i class="las la-angle-down fs-18"></i>
-                                </div>
-                                <div id="collapseDeliveryInfo" class="collapse show" aria-labelledby="headingDeliveryInfo" data-parent="#accordioncCheckoutInfo">
-                                    <div class="card-body" id="delivery_info">
-                                        @include('frontend.partials.cart.delivery_info', ['carts' => $carts, 'carrier_list' => $carrier_list, 'shipping_info' => $shipping_info])
-                                    </div>
-                                </div>
-                            </div>
+{{--                            <div class="card rounded-0 border shadow-none" style="margin-bottom: 2rem; overflow: visible !important;">--}}
+{{--                                <div class="card-header border-bottom-0 py-3 py-xl-4" id="headingDeliveryInfo" type="button" data-toggle="collapse" data-target="#collapseDeliveryInfo" aria-expanded="true" aria-controls="collapseDeliveryInfo">--}}
+{{--                                    <div class="d-flex align-items-center">--}}
+{{--                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">--}}
+{{--                                            <path id="Path_42357" data-name="Path 42357" d="M58,48A10,10,0,1,0,68,58,10,10,0,0,0,58,48ZM56.457,61.543a.663.663,0,0,1-.423.212.693.693,0,0,1-.428-.216l-2.692-2.692.856-.856,2.269,2.269,6-6.043.841.87Z" transform="translate(-48 -48)" fill="#9d9da6"/>--}}
+{{--                                        </svg>--}}
+{{--                                        <span class="ml-2 fs-19 fw-700">{{ translate('Delivery Info') }}</span>--}}
+{{--                                    </div>--}}
+{{--                                    <i class="las la-angle-down fs-18"></i>--}}
+{{--                                </div>--}}
+{{--                                <div id="collapseDeliveryInfo" class="collapse show" aria-labelledby="headingDeliveryInfo" data-parent="#accordioncCheckoutInfo">--}}
+{{--                                    <div class="card-body" id="delivery_info">--}}
+{{--                                        @include('frontend.partials.cart.delivery_info', ['carts' => $carts, 'carrier_list' => $carrier_list, 'shipping_info' => $shipping_info])--}}
+{{--                                    </div>--}}
+{{--                                </div>--}}
+{{--                            </div>--}}
 
 
                             <!-- Payment Info -->
@@ -358,7 +318,7 @@
                 carrierCount = data.carrier_count;
                 checkCarrerShippingInfo();
             });
-           
+
             AIZ.plugins.bootstrapSelect("refresh");
         }
 
@@ -597,5 +557,4 @@
     @if (get_setting('google_map') == 1)
         @include('frontend.partials.google_map')
     @endif
-
 @endsection

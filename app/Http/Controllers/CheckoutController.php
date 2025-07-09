@@ -820,4 +820,79 @@ class CheckoutController extends Controller
         flash(translate('Payment done.'))->success();
         return redirect()->route('purchase_history.details', encrypt($order->id));
     }
+
+    public function updateQuantity(Request $request)
+    {
+        $cartItem = Cart::findOrFail($request->id);
+
+        if ($cartItem['id'] == $request->id) {
+            $product = Product::find($cartItem['product_id']);
+            $product_stock = $product->stocks->where('variant', $cartItem['variation'])->first();
+            $quantity = $product_stock->qty;
+            $price = $product_stock->price;
+
+            //discount calculation
+            $discount_applicable = false;
+
+            if ($product->discount_start_date == null) {
+                $discount_applicable = true;
+            } elseif (
+                strtotime(date('d-m-Y H:i:s')) >= $product->discount_start_date &&
+                strtotime(date('d-m-Y H:i:s')) <= $product->discount_end_date
+            ) {
+                $discount_applicable = true;
+            }
+
+            if ($discount_applicable) {
+                if ($product->discount_type == 'percent') {
+                    $price -= ($price * $product->discount) / 100;
+                } elseif ($product->discount_type == 'amount') {
+                    $price -= $product->discount;
+                }
+            }
+
+            if ($quantity >= $request->quantity) {
+                if ($request->quantity >= $product->min_qty) {
+                    $cartItem['quantity'] = $request->quantity;
+                }
+            }
+
+            if ($product->wholesale_product) {
+                $wholesalePrice = $product_stock->wholesalePrices->where('min_qty', '<=', $request->quantity)->where('max_qty', '>=', $request->quantity)->first();
+                if ($wholesalePrice) {
+                    $price = $wholesalePrice->price;
+                }
+            }
+
+            $cartItem['price'] = $price;
+            $cartItem->save();
+        }
+
+        if (auth()->user() != null) {
+            $user_id = Auth::user()->id;
+            $carts = Cart::where('user_id', $user_id)->get();
+        } else {
+            $temp_user_id = $request->session()->get('temp_user_id');
+            $carts = Cart::where('temp_user_id', $temp_user_id)->get();
+        }
+
+    }
+
+    public function removeFromCheckout(Request $request)
+    {
+        Cart::destroy($request->id);
+        $authUser = auth()->user();
+        if ($authUser != null) {
+            $user_id = $authUser->id;
+            $carts = Cart::where('user_id', $user_id)->get();
+        } else {
+            $temp_user_id = $request->session()->get('temp_user_id');
+            $carts = Cart::where('temp_user_id', $temp_user_id)->get();
+        }
+        if ($carts->isEmpty()) {
+            return response()->json(['redirect' => true]);
+        }
+        return response()->json(['redirect' => false]);
+
+    }
 }

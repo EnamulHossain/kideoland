@@ -710,27 +710,30 @@
             return false;
         }
 
-        function addToCart(){
+        function addToCart(id){
             @if (Auth::check() && Auth::user()->user_type != 'customer')
-                AIZ.plugins.notify('warning', "{{ translate('Please Login as a customer to add products to the Cart.') }}");
-                return false;
+            AIZ.plugins.notify('warning', "{{ translate('Please Login as a customer to add products to the Cart.') }}");
+            return false;
             @endif
 
             if(checkAddToCartValidity()) {
-                $('#addToCart').modal();
-                $('.c-preloader').show();
                 $.ajax({
                     type:"POST",
                     url: '{{ route('cart.addToCart') }}',
-                    data: $('#option-choice-form').serializeArray(),
+                    data: {
+                        _token: '{{ csrf_token() }}',
+                        id: id,
+                        quantity: 1
+                    },
                     success: function(data){
-                       $('#addToCart-modal-body').html(null);
-                       $('.c-preloader').hide();
-                       $('#modal-size').removeClass('modal-lg');
-                       $('#addToCart-modal-body').html(data.modal_view);
-                       AIZ.extra.plusMinus();
-                       AIZ.plugins.slickCarousel();
-                       updateNavCart(data.nav_cart_view,data.cart_count);
+                        window.location.href = '{{ route('checkout') }}';
+                        // $('#addToCart-modal-body').html(null);
+                        // $('.c-preloader').hide();
+                        // $('#modal-size').removeClass('modal-lg');
+                        // $('#addToCart-modal-body').html(data.modal_view);
+                        // AIZ.extra.plusMinus();
+                        // AIZ.plugins.slickCarousel();
+                        // updateNavCart(data.nav_cart_view,data.cart_count);
                     }
                 });
 
@@ -744,6 +747,41 @@
                 AIZ.plugins.notify('warning', "{{ translate('Please choose all the options') }}");
             }
         }
+
+        {{--function addToCart(){--}}
+        {{--    @if (Auth::check() && Auth::user()->user_type != 'customer')--}}
+        {{--        AIZ.plugins.notify('warning', "{{ translate('Please Login as a customer to add products to the Cart.') }}");--}}
+        {{--        return false;--}}
+        {{--    @endif--}}
+
+        {{--    if(checkAddToCartValidity()) {--}}
+        {{--        $('#addToCart').modal();--}}
+        {{--        $('.c-preloader').show();--}}
+        {{--        $.ajax({--}}
+        {{--            type:"POST",--}}
+        {{--            url: '{{ route('cart.addToCart') }}',--}}
+        {{--            data: $('#option-choice-form').serializeArray(),--}}
+        {{--            success: function(data){--}}
+        {{--               $('#addToCart-modal-body').html(null);--}}
+        {{--               $('.c-preloader').hide();--}}
+        {{--               $('#modal-size').removeClass('modal-lg');--}}
+        {{--               $('#addToCart-modal-body').html(data.modal_view);--}}
+        {{--               AIZ.extra.plusMinus();--}}
+        {{--               AIZ.plugins.slickCarousel();--}}
+        {{--               updateNavCart(data.nav_cart_view,data.cart_count);--}}
+        {{--            }--}}
+        {{--        });--}}
+
+        {{--        if ("{{ get_setting('facebook_pixel') }}" == 1){--}}
+        {{--            // Facebook Pixel AddToCart Event--}}
+        {{--            fbq('track', 'AddToCart', {content_type: 'product'});--}}
+        {{--            // Facebook Pixel AddToCart Event--}}
+        {{--        }--}}
+        {{--    }--}}
+        {{--    else{--}}
+        {{--        AIZ.plugins.notify('warning', "{{ translate('Please choose all the options') }}");--}}
+        {{--    }--}}
+        {{--}--}}
 
         function buyNow(){
             @if (Auth::check() && Auth::user()->user_type != 'customer')
@@ -910,6 +948,29 @@
     <script>
         function showFloatingButtons() {
             document.querySelector('.floating-buttons-section').classList.toggle('show');;
+        }
+    </script>
+    <script>
+        function updateCheckoutQuantity(key, element) {
+            $.post('{{ route('checkout.updateQuantity') }}', {
+                _token: AIZ.data.csrf,
+                id: key,
+                quantity: element.value
+            }, function(data) {
+                window.location.reload();
+            });
+        }
+        function removeFromCheckout(e, key) {
+            $.post('{{ route('checkout.removeFromCart') }}', {
+                _token  : AIZ.data.csrf,
+                id      :  key
+            }, function(data){
+                if (data.redirect) {
+                    window.location.href = '{{ route('home') }}';
+                } else {
+                    window.location.reload();
+                }
+            });
         }
     </script>
 

@@ -95,7 +95,7 @@
             <span class="border border-secondary-base btn fs-12 ml-3 px-3 py-1 rounded-1 text-secondary">
                 {{ $detailedProduct->warranty->getTranslation('text')}}
                 @if($detailedProduct->warranty_note_id != null)
-                    <span href="javascript:void(1);" 
+                    <span href="javascript:void(1);"
                         data-toggle="modal" data-target="#warranty-note-modal"
                         class="border-bottom border-bottom-4 ml-2 text-secondary-base">
                         {{ translate('View Details') }}
@@ -503,11 +503,11 @@
                 @else
                     <button type="button"
                         class="btn btn-secondary-base mr-2 add-to-cart fw-600 min-w-150px rounded-0 text-white"
-                        @if (Auth::check() || get_Setting('guest_checkout_activation') == 1) onclick="addToCart()" @else onclick="showLoginModal()" @endif>
+                        @if (Auth::check() || get_Setting('guest_checkout_activation') == 1) onclick="addToCart({{$detailedProduct->id}})" @else onclick="showLoginModal()" @endif>
                         <i class="las la-shopping-bag"></i> {{ translate('Add to cart') }}
                     </button>
                     <button type="button" class="btn btn-primary buy-now fw-600 add-to-cart min-w-150px rounded-0"
-                        @if (Auth::check() || get_Setting('guest_checkout_activation') == 1) onclick="addToCart()" @else onclick="showLoginModal()" @endif>
+                        @if (Auth::check() || get_Setting('guest_checkout_activation') == 1) onclick="addToCart({{$detailedProduct->id}})" @else onclick="showLoginModal()" @endif>
                         <i class="la la-shopping-cart"></i> {{ translate('Buy Now') }}
                     </button>
                 @endif
@@ -517,11 +517,11 @@
             @elseif ($detailedProduct->digital == 1)
                 <button type="button"
                     class="btn btn-secondary-base mr-2 add-to-cart fw-600 min-w-150px rounded-0 text-white"
-                    @if (Auth::check() || get_Setting('guest_checkout_activation') == 1) onclick="addToCart()" @else onclick="showLoginModal()" @endif>
+                    @if (Auth::check() || get_Setting('guest_checkout_activation') == 1) onclick="addToCart({{$detailedProduct->id}})" @else onclick="showLoginModal()" @endif>
                     <i class="las la-shopping-bag"></i> {{ translate('Add to cart') }}
                 </button>
                 <button type="button" class="btn btn-primary buy-now fw-600 add-to-cart min-w-150px rounded-0"
-                    @if (Auth::check() || get_Setting('guest_checkout_activation') == 1) onclick="addToCart()" @else onclick="showLoginModal()" @endif>
+                    @if (Auth::check() || get_Setting('guest_checkout_activation') == 1) onclick="addToCart({{$detailedProduct->id}})" @else onclick="showLoginModal()" @endif>
                     <i class="la la-shopping-cart"></i> {{ translate('Buy Now') }}
                 </button>
             @endif
@@ -573,15 +573,15 @@
                             @endif
                         </a>
                         @if($detailedProduct->refund_note_id != null)
-                            <span href="javascript:void(1);" 
+                            <span href="javascript:void(1);"
                                 data-toggle="modal" data-target="#refund-note-modal"
                                 class="border-bottom border-bottom-4 ml-2 text-secondary-base">
                                 {{ translate('Refund Note') }}
                             </span>
                         @endif
-                        
+
                         <a href="{{ route('returnpolicy') }}" class="text-blue hov-text-primary fs-14 ml-3" target="_blank">{{ translate('View Policy') }}</a>
-                        
+
                     @else
                         <div class="text-dark fs-14 fw-400 mt-2">{{ translate('Not Applicable') }}</div>
                     @endif

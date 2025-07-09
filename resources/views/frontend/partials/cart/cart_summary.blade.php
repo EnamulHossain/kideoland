@@ -78,11 +78,14 @@
                     </tr>
                     @if ($proceed != 1)
                     <!-- Total Shipping -->
-                    <tr class="cart-shipping">
-                        <th class="pl-0 fs-14 fw-400 pt-0 pb-2 text-dark border-top-0">{{ translate('Total Shipping') }}</th>
-                        <td class="text-right pr-0 fs-14 pt-0 pb-2 text-dark border-top-0">{{ single_price($shipping) }}</td>
-                    </tr>
+{{--                    <tr class="cart-shipping">--}}
+{{--                        <th class="pl-0 fs-14 fw-400 pt-0 pb-2 text-dark border-top-0">{{ translate('Total Shipping') }}</th>--}}
+{{--                        <td class="text-right pr-0 fs-14 pt-0 pb-2 text-dark border-top-0">{{ single_price($shipping) }}</td>--}}
+{{--                    </tr>--}}
                     @endif
+                    <tr class="cart-shipping">
+                        <td>{{ translate('Inside Dhaka')  .' '. single_price(70) }} <br> {{ translate('Outside Dhaka')  .' '. single_price(120) }} </td>
+                    </tr>
                     <!-- Redeem point -->
                     @if (Session::has('club_point'))
                         <tr class="cart-club-point">
