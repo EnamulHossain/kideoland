@@ -245,7 +245,7 @@
     </section>
 @endsection
 
-@section('script')
+{{-- @section('script')
     @if (get_setting('facebook_pixel') == 1)
     <!-- Facebook Pixel purchase Event -->
     <script>
@@ -263,5 +263,39 @@
     </script>
     <!-- Facebook Pixel purchase Event -->
     @endif
+@endsection --}}
+
+@section('script')
+    @if (get_setting('facebook_pixel') == 1)
+    <!-- Facebook Pixel Purchase Event -->
+    <script>
+        $(document).ready(function(){
+            // Get the required values from your backend
+            var currency = '{{ get_system_currency()->code }}';
+            var value = {{ $combined_order->grand_total }};
+            var content_ids = [
+                @foreach ($combined_order->orders as $order)
+                    @foreach ($order->orderDetails as $orderDetail)
+                        '{{ $orderDetail->product_id }}',
+                    @endforeach
+                @endforeach
+            ];
+
+            // Remove duplicates and filter out null values
+            content_ids = content_ids.filter(function(item, pos, self) {
+                return item && self.indexOf(item) === pos;
+            });
+
+            fbq('track', 'Purchase', {
+                value: value,
+                currency: currency,
+                content_ids: content_ids,
+                content_type: 'product',
+                num_items: {{ $combined_order->orders->sum(function($order) { return $order->orderDetails->sum('quantity'); }) }},
+                order_id: '{{ $combined_order->id }}'
+            });
+        });
+    </script>
+    <!-- End Facebook Pixel Purchase Event -->
+    @endif
 @endsection
-        

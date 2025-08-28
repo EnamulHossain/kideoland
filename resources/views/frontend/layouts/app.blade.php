@@ -710,6 +710,75 @@
             return false;
         }
 
+        // function addToCart(){
+        //     @if (Auth::check() && Auth::user()->user_type != 'customer')
+        //         AIZ.plugins.notify('warning', "{{ translate('Please Login as a customer to add products to the Cart.') }}");
+        //         return false;
+        //     @endif
+
+        //     if(checkAddToCartValidity()) {
+        //         $('#addToCart').modal();
+        //         $('.c-preloader').show();
+        //         $.ajax({
+        //             type:"POST",
+        //             url: '{{ route('cart.addToCart') }}',
+        //             data: $('#option-choice-form').serializeArray(),
+        //             success: function(data){
+        //                $('#addToCart-modal-body').html(null);
+        //                $('.c-preloader').hide();
+        //                $('#modal-size').removeClass('modal-lg');
+        //                $('#addToCart-modal-body').html(data.modal_view);
+        //                AIZ.extra.plusMinus();
+        //                AIZ.plugins.slickCarousel();
+        //                updateNavCart(data.nav_cart_view,data.cart_count);
+        //             }
+        //         });
+
+        //         if ("{{ get_setting('facebook_pixel') }}" == 1){
+        //             // Facebook Pixel AddToCart Event
+        //             fbq('track', 'AddToCart', {content_type: 'product'});
+        //             // Facebook Pixel AddToCart Event
+        //         }
+        //     }
+        //     else{
+        //         AIZ.plugins.notify('warning', "{{ translate('Please choose all the options') }}");
+        //     }
+        // }
+
+        // function buyNow(){
+        //     @if (Auth::check() && Auth::user()->user_type != 'customer')
+        //         AIZ.plugins.notify('warning', "{{ translate('Please Login as a customer to add products to the Cart.') }}");
+        //         return false;
+        //     @endif
+
+        //     if(checkAddToCartValidity()) {
+        //         $('#addToCart-modal-body').html(null);
+        //         $('#addToCart').modal();
+        //         $('.c-preloader').show();
+        //         $.ajax({
+        //             type:"POST",
+        //             url: '{{ route('cart.addToCart') }}',
+        //             data: $('#option-choice-form').serializeArray(),
+        //             success: function(data){
+        //                 if(data.status == 1){
+        //                     $('#addToCart-modal-body').html(data.modal_view);
+        //                     updateNavCart(data.nav_cart_view,data.cart_count);
+        //                     window.location.replace("{{ route('cart') }}");
+        //                 }
+        //                 else{
+        //                     $('#addToCart-modal-body').html(null);
+        //                     $('.c-preloader').hide();
+        //                     $('#modal-size').removeClass('modal-lg');
+        //                     $('#addToCart-modal-body').html(data.modal_view);
+        //                 }
+        //             }
+        //        });
+        //     }
+        //     else{
+        //         AIZ.plugins.notify('warning', "{{ translate('Please choose all the options') }}");
+        //     }
+        // }
+
         function addToCart(){
             @if (Auth::check() && Auth::user()->user_type != 'customer')
                 AIZ.plugins.notify('warning', "{{ translate('Please Login as a customer to add products to the Cart.') }}");
@@ -724,21 +793,31 @@
                     url: '{{ route('cart.addToCart') }}',
                     data: $('#option-choice-form').serializeArray(),
                     success: function(data){
-                       $('#addToCart-modal-body').html(null);
-                       $('.c-preloader').hide();
-                       $('#modal-size').removeClass('modal-lg');
-                       $('#addToCart-modal-body').html(data.modal_view);
-                       AIZ.extra.plusMinus();
-                       AIZ.plugins.slickCarousel();
-                       updateNavCart(data.nav_cart_view,data.cart_count);
+                    $('#addToCart-modal-body').html(null);
+                    $('.c-preloader').hide();
+                    $('#modal-size').removeClass('modal-lg');
+                    $('#addToCart-modal-body').html(data.modal_view);
+                    AIZ.extra.plusMinus();
+                    AIZ.plugins.slickCarousel();
+                    updateNavCart(data.nav_cart_view,data.cart_count);
+
+                    // Facebook Pixel AddToCart Event - MOVED inside success callback
+                    if ("{{ get_setting('facebook_pixel') }}" == 1){
+                        // Get product data from the form or page
+                        var productId = $('#option-choice-form input[name="id"]').val(); // Assuming you have product ID in form
+                        var productName = $('h1.mb-0.fs-20').text() || 'Product'; // Get product name from page
+                        var productPrice = $('.product-price strong').data('value') || $('#option-choice-form input[name="price"]').val(); // Get product price
+
+                        fbq('track', 'AddToCart', {
+                            content_ids: [productId],
+                            content_name: productName,
+                            content_type: 'product',
+                            value: productPrice,
+                            currency: '{{ get_system_currency()->code }}'
+                        });
+                    }
                     }
                 });
-
-                if ("{{ get_setting('facebook_pixel') }}" == 1){
-                    // Facebook Pixel AddToCart Event
-                    fbq('track', 'AddToCart', {content_type: 'product'});
-                    // Facebook Pixel AddToCart Event
-                }
             }
             else{
                 AIZ.plugins.notify('warning', "{{ translate('Please choose all the options') }}");
@@ -763,6 +842,22 @@
                         if(data.status == 1){
                             $('#addToCart-modal-body').html(data.modal_view);
                             updateNavCart(data.nav_cart_view,data.cart_count);
+
+                            // Facebook Pixel AddToCart Event for Buy Now
+                            if ("{{ get_setting('facebook_pixel') }}" == 1){
+                                var productId = $('#option-choice-form input[name="id"]').val();
+                                var productName = $('h1.mb-0.fs-20').text() || 'Product';
+                                var productPrice = $('.product-price strong').data('value') || $('#option-choice-form input[name="price"]').val();
+
+                                fbq('track', 'AddToCart', {
+                                    content_ids: [productId],
+                                    content_name: productName,
+                                    content_type: 'product',
+                                    value: productPrice,
+                                    currency: '{{ get_system_currency()->code }}'
+                                });
+                            }
+
                             window.location.replace("{{ route('cart') }}");
                         }
                         else{
@@ -772,7 +867,7 @@
                             $('#addToCart-modal-body').html(data.modal_view);
                         }
                     }
-               });
+            });
             }
             else{
                 AIZ.plugins.notify('warning', "{{ translate('Please choose all the options') }}");
