@@ -215,6 +215,12 @@
 
 </head>
 <body>
+
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TP8KW8CJ"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+    
     <!-- aiz-main-wrapper -->
     <div class="aiz-main-wrapper d-flex flex-column bg-white">
         @php
