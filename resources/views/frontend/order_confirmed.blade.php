@@ -83,7 +83,8 @@
                         </svg>
                         <h1 class="mb-2 fs-28 fw-500 text-success">{{ translate('Thank You for Your Order!') }}</h1>
                         <p class="fs-13 text-soft-dark">{{ translate('A copy or your order summary has been sent to') }}
-                            <strong>{{ json_decode($first_order->shipping_address)->email }}</strong></p>
+                            <strong>{{ json_decode($first_order->shipping_address)->email }}</strong>
+                        </p>
                     </div>
                     <!-- Order Summary -->
                     <div class="mb-4 bg-white p-4 border">
@@ -332,6 +333,19 @@
                 });
             });
         </script>
+        <script>
+            fbq('track', 'Purchase', {
+                content_ids: [
+                    @foreach ($order->orderDetails as $item)
+                        '{{ $item->product->id }}',
+                    @endforeach
+                ],
+                content_type: 'product',
+                value: {{ $order->grand_total }},
+                currency: 'USD'
+            });
+        </script>
+
         <!-- End Facebook Pixel Purchase Event -->
     @endif
 
