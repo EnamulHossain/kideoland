@@ -14,7 +14,8 @@
                             <span class="fs-36 mr-3">{{ $detailedProduct->rating }}</span>
                             <span class="fs-14 mr-3">{{ translate('out of 5.0') }}</span>
                         </div>
-                        <div class="mt-sm-3 w-100 w-sm-auto d-flex flex-wrap justify-content-end justify-content-md-start">
+                        <div
+                            class="mt-sm-3 w-100 w-sm-auto d-flex flex-wrap justify-content-end justify-content-md-start">
                             @php
                                 $total = 0;
                                 $total += $detailedProduct->reviews->where('status', 1)->count();
@@ -28,7 +29,7 @@
                     </div>
                 </div>
                 <div class="col-md-4 text-right">
-                    <a  href="javascript:void(0);" onclick="product_review('{{ $detailedProduct->id }}')"
+                    <a href="javascript:void(0);" onclick="product_review('{{ $detailedProduct->id }}')"
                         class="btn btn-secondary-base fw-400 rounded-0 text-white">
                         <span class="d-md-inline-block"> {{ translate('Rate this Product') }}</span>
                     </a>
@@ -39,3 +40,19 @@
     <!-- Reviews -->
     @include('frontend.product_details.reviews')
 </div>
+
+<script>
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+        'event': 'view_item',
+        'ecommerce': {
+            'items': [{
+                'item_name': '{{ addslashes($detailedProduct->getTranslation('name')) }}',
+                'item_id': '{{ $detailedProduct->id }}',
+                'price': '{{ $detailedProduct->unit_price }}',
+                'currency': 'USD',
+                'quantity': 1
+            }]
+        }
+    });
+</script>
