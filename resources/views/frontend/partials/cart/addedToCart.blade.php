@@ -84,3 +84,74 @@
 
     </div>
 </div>
+
+
+
+<script type="text/javascript">
+    // Trigger on option change
+    $('#option-choice-form input').on('change', function () {
+        getVariantPrice();
+
+        // GTM Option Selection Event
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({
+            'event': 'product_option_selected',
+            'product_id': '{{ $product->id }}',
+            'product_name': '{{ $product->getTranslation("name") }}',
+            'variant': getSelectedVariant(), // JS function to get variant
+            'quantity': $('input[name=quantity]').val()
+        });
+    });
+
+    // Add to Cart Button Click
+    function addToCart() {
+        var productId = '{{ $product->id }}';
+        var quantity = $('input[name=quantity]').val();
+        var variant = getSelectedVariant();
+
+        // GTM Add To Cart Event
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({
+            'event': 'add_to_cart',
+            'ecommerce': {
+                'items': [{
+                    'item_id': productId,
+                    'item_name': '{{ $product->getTranslation("name") }}',
+                    'price': '{{ home_discounted_price($product, false) }}',
+                    'quantity': quantity,
+                    'variant': variant
+                }]
+            }
+        });
+
+        // Facebook Pixel AddToCart
+        if (typeof fbq !== 'undefined') {
+            fbq('track', 'AddToCart', {
+                content_ids: [productId],
+                content_name: '{{ $product->getTranslation("name") }}',
+                content_type: 'product',
+                value: '{{ home_discounted_price($product, false) }}',
+                currency: 'USD',
+                quantity: quantity
+            });
+        }
+
+        // Call your existing AJAX AddToCart
+        @if (Auth::check() || get_Setting('guest_checkout_activation') == 1)
+            addToCartAjax();
+        @else
+            showLoginModal();
+        @endif
+    }
+
+    // Helper function to get selected variant
+    function getSelectedVariant() {
+        var variant = '';
+        $('#option-choice-form input[type=radio]').each(function() {
+            if ($(this).is(':checked')) {
+                variant += $(this).val() + '-';
+            }
+        });
+        return variant.slice(0, -1); // remove last dash
+    }
+</script>
