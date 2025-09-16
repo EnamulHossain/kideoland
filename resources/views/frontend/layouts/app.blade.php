@@ -872,6 +872,8 @@
                                 }]
                             }
                         });
+
+                        consol.log('window.dataLayer', window.dataLayer)
                     }
                 });
             } else {
