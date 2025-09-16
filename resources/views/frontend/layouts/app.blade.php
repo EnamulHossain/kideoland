@@ -737,6 +737,21 @@
                     }
                 });
 
+                window.dataLayer = window.dataLayer || [];
+                window.dataLayer.push({
+                    'event': 'add_to_cart',
+                    'ecommerce': {
+                        'currency': 'USD',
+                        'value': data.product.price,
+                        'items': [{
+                            'item_id': data.product.id,
+                            'item_name': data.product.name,
+                            'price': data.product.price,
+                            'quantity': 1
+                        }]
+                    }
+                });
+
                 if ("{{ get_setting('facebook_pixel') }}" == 1){
                     // Facebook Pixel AddToCart Event
                     fbq('track', 'AddToCart', {content_type: 'product'});
