@@ -817,33 +817,48 @@
                     url: '{{ route('cart.addToCart') }}',
                     data: $('#option-choice-form').serializeArray(),
                     success: function(data){
-                    $('#addToCart-modal-body').html(null);
-                    $('.c-preloader').hide();
-                    $('#modal-size').removeClass('modal-lg');
-                    $('#addToCart-modal-body').html(data.modal_view);
-                    AIZ.extra.plusMinus();
-                    AIZ.plugins.slickCarousel();
-                    updateNavCart(data.nav_cart_view,data.cart_count);
+                        $('#addToCart-modal-body').html(null);
+                        $('.c-preloader').hide();
+                        $('#modal-size').removeClass('modal-lg');
+                        $('#addToCart-modal-body').html(data.modal_view);
+                        AIZ.extra.plusMinus();
+                        AIZ.plugins.slickCarousel();
+                        updateNavCart(data.nav_cart_view,data.cart_count);
 
-                    // Facebook Pixel AddToCart Event - MOVED inside success callback
-                    if ("{{ get_setting('facebook_pixel') }}" == 1){
-                        // Get product data from the form or page
-                        var productId = $('#option-choice-form input[name="id"]').val(); // Assuming you have product ID in form
-                        var productName = $('h1.mb-0.fs-20').text() || 'Product'; // Get product name from page
-                        var productPrice = $('.product-price strong').data('value') || $('#option-choice-form input[name="price"]').val(); // Get product price
+                        // Facebook Pixel AddToCart Event
+                        if ("{{ get_setting('facebook_pixel') }}" == 1){
+                            var productId = $('#option-choice-form input[name="id"]').val();
+                            var productName = $('h1.mb-0.fs-20').text() || 'Product';
+                            var productPrice = $('.product-price strong').data('value') || $('#option-choice-form input[name="price"]').val();
 
-                        fbq('track', 'AddToCart', {
-                            content_ids: [productId],
-                            content_name: productName,
-                            content_type: 'product',
-                            value: productPrice,
-                            currency: '{{ get_system_currency()->code }}'
+                            fbq('track', 'AddToCart', {
+                                content_ids: [productId],
+                                content_name: productName,
+                                content_type: 'product',
+                                value: productPrice,
+                                currency: '{{ get_system_currency()->code }}'
+                            });
+                        }
+
+                        // Google Tag Manager / GA4 AddToCart Event
+                        window.dataLayer = window.dataLayer || [];
+                        window.dataLayer.push({
+                            event: 'add_to_cart',
+                            ecommerce: {
+                                currency: '{{ get_system_currency()->code }}',
+                                value: productPrice,
+                                items: [{
+                                    item_id: productId,
+                                    item_name: productName,
+                                    price: productPrice,
+                                    item_category: "{{ $detailedProduct->category->name ?? '' }}",
+                                    quantity: 1
+                                }]
+                            }
                         });
                     }
-                    }
                 });
-            }
-            else{
+            } else {
                 AIZ.plugins.notify('warning', "{{ translate('Please choose all the options') }}");
             }
         }
@@ -882,6 +897,39 @@
                                 });
                             }
 
+                            // Google Tag Manager / GA4 AddToCart Event
+                            window.dataLayer = window.dataLayer || [];
+                            window.dataLayer.push({
+                                event: 'add_to_cart',
+                                ecommerce: {
+                                    currency: '{{ get_system_currency()->code }}',
+                                    value: productPrice,
+                                    items: [{
+                                        item_id: productId,
+                                        item_name: productName,
+                                        price: productPrice,
+                                        item_category: "{{ $detailedProduct->category->name ?? '' }}",
+                                        quantity: 1
+                                    }]
+                                }
+                            });
+
+                            window.dataLayer = window.dataLayer || [];
+                            window.dataLayer.push({
+                                event: 'AddToCart',
+                                ecommerce: {
+                                    currency: '{{ get_system_currency()->code }}',
+                                    value: productPrice,
+                                    items: [{
+                                        item_id: productId,
+                                        item_name: productName,
+                                        price: productPrice,
+                                        item_category: "{{ $detailedProduct->category->name ?? '' }}",
+                                        quantity: 1
+                                    }]
+                                }
+                            });
+
                             window.location.replace("{{ route('cart') }}");
                         }
                         else{
@@ -891,9 +939,8 @@
                             $('#addToCart-modal-body').html(data.modal_view);
                         }
                     }
-            });
-            }
-            else{
+                });
+            } else {
                 AIZ.plugins.notify('warning', "{{ translate('Please choose all the options') }}");
             }
         }

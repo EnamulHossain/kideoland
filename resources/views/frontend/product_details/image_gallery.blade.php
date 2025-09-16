@@ -2,7 +2,7 @@
     @php
         $photos = $detailedProduct->photos != null ? explode(',', $detailedProduct->photos) : [];
     @endphp
-    
+
     <!-- Gallery Images -->
     <div class="col-12">
         <div class="aiz-carousel product-gallery arrow-inactive-transparent arrow-lg-none"
@@ -32,8 +32,9 @@
     </div>
     <!-- Thumbnail Images -->
     <div class="col-12 mt-3 d-none d-lg-block">
-        <div class="aiz-carousel half-outside-arrow product-gallery-thumb" data-items='7' data-nav-for='.product-gallery'
-            data-focus-select='true' data-arrows='true' data-vertical='false' data-auto-height='true'>
+        <div class="aiz-carousel half-outside-arrow product-gallery-thumb" data-items='7'
+            data-nav-for='.product-gallery' data-focus-select='true' data-arrows='true' data-vertical='false'
+            data-auto-height='true'>
 
             @if ($detailedProduct->digital == 0)
                 @foreach ($detailedProduct->stocks as $key => $stock)
@@ -61,3 +62,51 @@
 
 
 </div>
+
+
+<script>
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+        event: 'ProductView',
+        ecommerce: {
+            item_name: "{{ $detailedProduct->name }}",
+            item_id: "{{ $detailedProduct->id }}",
+            price: "{{ $detailedProduct->unit_price }}",
+            category: "{{ $detailedProduct->category->name ?? '' }}"
+        }
+    });
+</script>
+
+
+{{-- <script>
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+        event: 'view_item',
+        ecommerce: {
+            items: [{
+                item_id: "{{ $detailedProduct->id }}",
+                item_name: "{{ $detailedProduct->name }}",
+                price: "{{ $detailedProduct->unit_price }}",
+                item_category: "{{ $detailedProduct->category->name ?? '' }}"
+            }]
+        }
+    });
+</script> --}}
+
+
+<script>
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+        event: 'view_item',
+        ecommerce: {
+            currency: "BDT",
+            value: "{{ $detailedProduct->unit_price }}",
+            items: [{
+                item_id: "{{ $detailedProduct->id }}",
+                item_name: "{{ $detailedProduct->name }}",
+                price: "{{ $detailedProduct->unit_price }}",
+                item_category: "{{ $detailedProduct->category->name ?? '' }}"
+            }]
+        }
+    });
+</script>
