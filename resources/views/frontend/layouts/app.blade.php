@@ -856,6 +856,22 @@
                                 }]
                             }
                         });
+
+                        window.dataLayer = window.dataLayer || [];
+                        window.dataLayer.push({
+                            event: 'AddToCart',
+                            ecommerce: {
+                                currency: '{{ get_system_currency()->code }}',
+                                value: productPrice,
+                                items: [{
+                                    item_id: productId,
+                                    item_name: productName,
+                                    price: productPrice,
+                                    item_category: "{{ $detailedProduct->category->name ?? '' }}",
+                                    quantity: 1
+                                }]
+                            }
+                        });
                     }
                 });
             } else {
