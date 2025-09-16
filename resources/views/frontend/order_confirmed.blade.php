@@ -370,5 +370,29 @@
                 }
             });
         </script>
+
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            window.dataLayer.push({
+                'event': 'purchase',
+                'ecommerce': {
+                    'transaction_id': '{{ $first_order->id }}',
+                    'value': '{{ $combined_order->grand_total }}',
+                    'currency': 'BDT',
+                    'items': [
+                        @foreach ($combined_order->orders as $order)
+                            @foreach ($order->orderDetails as $orderDetail)
+                                {
+                                    'item_name': '{{ $orderDetail->product != null ? addslashes($orderDetail->product->getTranslation('name')) : 'Product Unavailable' }}',
+                                    'item_id': '{{ $orderDetail->product != null ? $orderDetail->product->id : '' }}',
+                                    'price': '{{ $orderDetail->price }}',
+                                    'quantity': '{{ $orderDetail->quantity }}'
+                                },
+                            @endforeach
+                        @endforeach
+                    ]
+                }
+            });
+        </script>
     @endif
 @endsection
