@@ -50,7 +50,7 @@
                 'item_name': '{{ addslashes($detailedProduct->getTranslation('name')) }}',
                 'item_id': '{{ $detailedProduct->id }}',
                 'price': '{{ $detailedProduct->unit_price }}',
-                'currency': 'USD',
+                'currency': 'BDT',
                 'quantity': 1
             }]
         }
