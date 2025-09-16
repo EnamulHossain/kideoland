@@ -93,11 +93,13 @@
 
 
 
-{{-- <script>
+<script>
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({
         event: 'view_item',
         ecommerce: {
+            currency: "BDT",
+            value: "{{ $detailedProduct->unit_price }}",
             items: [{
                 item_id: "{{ $detailedProduct->id }}",
                 item_name: "{{ $detailedProduct->name }}",
@@ -106,13 +108,13 @@
             }]
         }
     });
-</script> --}}
+</script>
 
 
 <script>
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({
-        event: 'view_item',
+        event: 'ProductView',
         ecommerce: {
             currency: "BDT",
             value: "{{ $detailedProduct->unit_price }}",
