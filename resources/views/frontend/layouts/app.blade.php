@@ -741,7 +741,7 @@
                 window.dataLayer.push({
                     'event': 'add_to_cart',
                     'ecommerce': {
-                        'currency': 'USD',
+                        'currency': 'BDT',
                         'value': data.product.price,
                         'items': [{
                             'item_id': data.product.id,
