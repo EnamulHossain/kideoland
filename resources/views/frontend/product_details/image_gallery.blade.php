@@ -77,6 +77,21 @@
     });
 </script>
 
+<script>
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+        event: 'ViewContent',
+        ecommerce: {
+            item_name: "{{ $detailedProduct->name }}",
+            item_id: "{{ $detailedProduct->id }}",
+            price: "{{ $detailedProduct->unit_price }}",
+            category: "{{ $detailedProduct->category->name ?? '' }}"
+        }
+    });
+</script>
+
+
+
 
 {{-- <script>
     window.dataLayer = window.dataLayer || [];
