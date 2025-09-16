@@ -124,6 +124,21 @@
             }
         });
 
+         // GTM Add To Cart Event
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({
+            'event': 'AddToCart',
+            'ecommerce': {
+                'items': [{
+                    'item_id': productId,
+                    'item_name': '{{ $product->getTranslation("name") }}',
+                    'price': '{{ home_discounted_price($product, false) }}',
+                    'quantity': quantity,
+                    'variant': variant
+                }]
+            }
+        });
+
         // Facebook Pixel AddToCart
         if (typeof fbq !== 'undefined') {
             fbq('track', 'AddToCart', {
