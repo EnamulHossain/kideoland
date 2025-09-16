@@ -817,6 +817,77 @@
                     url: '{{ route('cart.addToCart') }}',
                     data: $('#option-choice-form').serializeArray(),
                     success: function(data){
+                        // ... existing modal code ...
+
+                        // Enhanced debugging for GTM
+                        var productId = $('#option-choice-form input[name="id"]').val();
+                        var productName = $('h1.mb-0.fs-20').text() || 'Product';
+                        var productPrice = $('.product-price strong').data('value') || $('#option-choice-form input[name="price"]').val();
+                        var quantity = $('#option-choice-form input[name="quantity"]').val() || 1;
+
+                        console.log('=== GTM Debug Info ===');
+                        console.log('Product ID:', productId);
+                        console.log('Product Name:', productName);
+                        console.log('Product Price:', productPrice);
+                        console.log('Quantity:', quantity);
+                        console.log('Currency:', '{{ get_system_currency()->code }}');
+
+                        // Check if dataLayer exists
+                        if (typeof window.dataLayer === 'undefined') {
+                            console.error('ERROR: dataLayer is not defined!');
+                            return;
+                        }
+
+                        // Facebook Pixel (keep as is)
+                        if ("{{ get_setting('facebook_pixel') }}" == 1){
+                            fbq('track', 'AddToCart', {
+                                content_ids: [productId],
+                                content_name: productName,
+                                content_type: 'product',
+                                value: productPrice,
+                                currency: '{{ get_system_currency()->code }}'
+                            });
+                            console.log('Facebook Pixel AddToCart fired');
+                        }
+
+                        // GTM Event
+                        var gtmEvent = {
+                            event: 'add_to_cart',
+                            ecommerce: {
+                                currency: '{{ get_system_currency()->code }}',
+                                value: parseFloat(productPrice) || 0,
+                                items: [{
+                                    item_id: productId || 'unknown',
+                                    item_name: productName || 'Unknown Product',
+                                    price: parseFloat(productPrice) || 0,
+                                    item_category: "{{ $detailedProduct->category->name ?? 'Unknown' }}",
+                                    quantity: parseInt(quantity) || 1
+                                }]
+                            }
+                        };
+
+                        console.log('Pushing GTM event:', gtmEvent);
+                        window.dataLayer.push(gtmEvent);
+                        console.log('Current dataLayer:', window.dataLayer);
+                    }
+                });
+            } else {
+                AIZ.plugins.notify('warning', "{{ translate('Please choose all the options') }}");
+            }
+        }
+            @if (Auth::check() && Auth::user()->user_type != 'customer')
+                AIZ.plugins.notify('warning', "{{ translate('Please Login as a customer to add products to the Cart.') }}");
+                return false;
+            @endif
+
+            if(checkAddToCartValidity()) {
+                $('#addToCart').modal();
+                $('.c-preloader').show();
+                $.ajax({
+                    type:"POST",
+                    url: '{{ route('cart.addToCart') }}',
+                    data: $('#option-choice-form').serializeArray(),
+                    success: function(data){
                         $('#addToCart-modal-body').html(null);
                         $('.c-preloader').hide();
                         $('#modal-size').removeClass('modal-lg');
