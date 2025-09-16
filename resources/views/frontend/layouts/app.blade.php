@@ -825,12 +825,14 @@
                         AIZ.plugins.slickCarousel();
                         updateNavCart(data.nav_cart_view,data.cart_count);
 
+                        // Get product data
+                        var productId = $('#option-choice-form input[name="id"]').val();
+                        var productName = $('h1.mb-0.fs-20').text() || 'Product';
+                        var productPrice = $('.product-price strong').data('value') || $('#option-choice-form input[name="price"]').val();
+                        var quantity = $('#option-choice-form input[name="quantity"]').val() || 1;
+
                         // Facebook Pixel AddToCart Event
                         if ("{{ get_setting('facebook_pixel') }}" == 1){
-                            var productId = $('#option-choice-form input[name="id"]').val();
-                            var productName = $('h1.mb-0.fs-20').text() || 'Product';
-                            var productPrice = $('.product-price strong').data('value') || $('#option-choice-form input[name="price"]').val();
-
                             fbq('track', 'AddToCart', {
                                 content_ids: [productId],
                                 content_name: productName,
@@ -846,34 +848,18 @@
                             event: 'add_to_cart',
                             ecommerce: {
                                 currency: '{{ get_system_currency()->code }}',
-                                value: productPrice,
+                                value: parseFloat(productPrice),
                                 items: [{
                                     item_id: productId,
                                     item_name: productName,
-                                    price: productPrice,
+                                    price: parseFloat(productPrice),
                                     item_category: "{{ $detailedProduct->category->name ?? '' }}",
-                                    quantity: 1
+                                    quantity: parseInt(quantity)
                                 }]
                             }
                         });
 
-                        window.dataLayer = window.dataLayer || [];
-                        window.dataLayer.push({
-                            event: 'AddToCart',
-                            ecommerce: {
-                                currency: '{{ get_system_currency()->code }}',
-                                value: productPrice,
-                                items: [{
-                                    item_id: productId,
-                                    item_name: productName,
-                                    price: productPrice,
-                                    item_category: "{{ $detailedProduct->category->name ?? '' }}",
-                                    quantity: 1
-                                }]
-                            }
-                        });
-
-                        consol.log('window.dataLayer', window.dataLayer)
+                        console.log('GTM add_to_cart event pushed:', window.dataLayer[window.dataLayer.length - 1]);
                     }
                 });
             } else {
@@ -900,12 +886,14 @@
                             $('#addToCart-modal-body').html(data.modal_view);
                             updateNavCart(data.nav_cart_view,data.cart_count);
 
+                            // Get product data
+                            var productId = $('#option-choice-form input[name="id"]').val();
+                            var productName = $('h1.mb-0.fs-20').text() || 'Product';
+                            var productPrice = $('.product-price strong').data('value') || $('#option-choice-form input[name="price"]').val();
+                            var quantity = $('#option-choice-form input[name="quantity"]').val() || 1;
+
                             // Facebook Pixel AddToCart Event for Buy Now
                             if ("{{ get_setting('facebook_pixel') }}" == 1){
-                                var productId = $('#option-choice-form input[name="id"]').val();
-                                var productName = $('h1.mb-0.fs-20').text() || 'Product';
-                                var productPrice = $('.product-price strong').data('value') || $('#option-choice-form input[name="price"]').val();
-
                                 fbq('track', 'AddToCart', {
                                     content_ids: [productId],
                                     content_name: productName,
@@ -915,56 +903,24 @@
                                 });
                             }
 
-                            // Google Tag Manager / GA4 AddToCart Event
+                            // Google Tag Manager / GA4 AddToCart Event for Buy Now
                             window.dataLayer = window.dataLayer || [];
                             window.dataLayer.push({
                                 event: 'add_to_cart',
                                 ecommerce: {
                                     currency: '{{ get_system_currency()->code }}',
-                                    value: productPrice,
+                                    value: parseFloat(productPrice),
                                     items: [{
                                         item_id: productId,
                                         item_name: productName,
-                                        price: productPrice,
+                                        price: parseFloat(productPrice),
                                         item_category: "{{ $detailedProduct->category->name ?? '' }}",
-                                        quantity: 1
+                                        quantity: parseInt(quantity)
                                     }]
                                 }
                             });
 
-                            window.dataLayer = window.dataLayer || [];
-                            window.dataLayer.push({
-                                event: 'AddToCart',
-                                ecommerce: {
-                                    currency: '{{ get_system_currency()->code }}',
-                                    value: productPrice,
-                                    items: [{
-                                        item_id: productId,
-                                        item_name: productName,
-                                        price: productPrice,
-                                        item_category: "{{ $detailedProduct->category->name ?? '' }}",
-                                        quantity: 1
-                                    }]
-                                }
-                            });
-
-                            window.dataLayer = window.dataLayer || [];
-                            window.dataLayer.push({
-                                event: 'addToCart',
-                                ecommerce: {
-                                    currency: '{{ get_system_currency()->code }}',
-                                    value: productPrice,
-                                    items: [{
-                                        item_id: productId,
-                                        item_name: productName,
-                                        price: productPrice,
-                                        item_category: "{{ $detailedProduct->category->name ?? '' }}",
-                                        quantity: 1
-                                    }]
-                                }
-                            });
-
-
+                            console.log('GTM add_to_cart event (Buy Now) pushed:', window.dataLayer[window.dataLayer.length - 1]);
 
                             window.location.replace("{{ route('cart') }}");
                         }
