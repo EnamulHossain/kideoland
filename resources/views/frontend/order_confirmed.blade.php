@@ -345,7 +345,7 @@
     <!-- GTM Begin add_to_cart Event -->
 
 
-    <!-- GTM Begin add_to_cart Event -->
+    <!-- GTM Begin view_item Event -->
     <script>
         $(document).ready(function() {
             var currend_code = '{{ get_system_currency()->code }}';
@@ -365,5 +365,52 @@
             });
         });
     </script>
-    <!-- GTM Begin add_to_cart Event -->
+    <!-- GTM Begin view_item Event -->
+
+
+        <!-- GTM Begin remove_from_cart Event -->
+    <script>
+        $(document).ready(function() {
+            var currend_code = '{{ get_system_currency()->code }}';
+            var amount = '{{ single_price($combined_order->grand_total) }}';
+            window.dataLayer = window.dataLayer || [];
+            window.dataLayer.push({
+                'event': 'remove_from_cart',
+                'ecommerce': {
+                    'currency': currend_code,
+                    'value': amount,
+                    'items': [{
+                        'item_name': 'Order',
+                        'price': amount,
+                        'quantity': 1
+                    }]
+                }
+            });
+        });
+    </script>
+    <!-- GTM Begin remove_from_cart Event -->
+
+
+    <!-- GTM Begin search Event -->
+    <script>
+        $(document).ready(function() {
+            var currend_code = '{{ get_system_currency()->code }}';
+            var amount = '{{ single_price($combined_order->grand_total) }}';
+            window.dataLayer = window.dataLayer || [];
+            window.dataLayer.push({
+                'event': 'search',
+                'ecommerce': {
+                    'currency': currend_code,
+                    'value': amount,
+                    'items': [{
+                        'item_name': 'Order',
+                        'price': amount,
+                        'quantity': 1
+                    }]
+                }
+            });
+        });
+    </script>
+    <!-- GTM Begin search Event -->
+    
 @endsection
