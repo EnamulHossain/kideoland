@@ -745,13 +745,40 @@
                         quantity: 1
                     },
                     success: function(data){
-                        // Redirect to checkout
-                        window.location.href = '{{ route('checkout') }}';
-
-                        // Push to GTM dataLayer
+                        // Push to GTM dataLayer FIRST
                         window.dataLayer = window.dataLayer || [];
                         window.dataLayer.push({
                             'event': 'add_to_cart',
+                            'ecommerce': {
+                                'currency': 'BDT',
+                                'value': data.product.price,
+                                'items': [{
+                                    'item_id': data.product.id,
+                                    'item_name': data.product.name,
+                                    'price': data.product.price,
+                                    'quantity': 1
+                                }]
+                            }
+                        });
+
+                        window.dataLayer = window.dataLayer || [];
+                        window.dataLayer.push({
+                            'event': 'AddToCart',
+                            'ecommerce': {
+                                'currency': 'BDT',
+                                'value': data.product.price,
+                                'items': [{
+                                    'item_id': data.product.id,
+                                    'item_name': data.product.name,
+                                    'price': data.product.price,
+                                    'quantity': 1
+                                }]
+                            }
+                        });
+
+                        window.dataLayer = window.dataLayer || [];
+                        window.dataLayer.push({
+                            'event': 'addToCart',
                             'ecommerce': {
                                 'currency': 'BDT',
                                 'value': data.product.price,
@@ -773,6 +800,11 @@
                                 currency: 'BDT'
                             });
                         }
+
+                        // Add delay before redirect to allow tracking to complete
+                        setTimeout(function() {
+                            window.location.href = '{{ route('checkout') }}';
+                        }, 300); // 300ms delay
                     },
                     error: function(xhr, status, error){
                         console.error(error);
