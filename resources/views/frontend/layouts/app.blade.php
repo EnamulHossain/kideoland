@@ -217,15 +217,6 @@
     echo get_setting('header_script');
 @endphp
 
-<!-- Google Tag Manager -->
-    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-    })(window,document,'script','dataLayer','GTM-TP8KW8CJ');</script>
-<!-- End Google Tag Manager -->
-
-
 </head>
 <body>
 
@@ -737,7 +728,7 @@
 
             if(checkAddToCartValidity()) {
                 $.ajax({
-                    type: "POST",
+                    type:"POST",
                     url: '{{ route('cart.addToCart') }}',
                     data: {
                         _token: '{{ csrf_token() }}',
@@ -745,47 +736,44 @@
                         quantity: 1
                     },
                     success: function(data){
-                        // Redirect to checkout
                         window.location.href = '{{ route('checkout') }}';
-
-                        // Push to GTM dataLayer
-                        window.dataLayer = window.dataLayer || [];
-                        window.dataLayer.push({
-                            'event': 'add_to_cart',
-                            'ecommerce': {
-                                'currency': 'BDT',
-                                'value': data.product.price,
-                                'items': [{
-                                    'item_id': data.product.id,
-                                    'item_name': data.product.name,
-                                    'price': data.product.price,
-                                    'quantity': 1
-                                }]
-                            }
-                        });
-
-                        // Facebook Pixel Track
-                        if ("{{ get_setting('facebook_pixel') }}" == 1){
-                            fbq('track', 'AddToCart', {
-                                content_ids: [data.product.id],
-                                content_type: 'product',
-                                value: data.product.price,
-                                currency: 'BDT'
-                            });
-                        }
-                    },
-                    error: function(xhr, status, error){
-                        console.error(error);
-                        AIZ.plugins.notify('danger', "{{ translate('Failed to add to cart. Please try again.') }}");
+                        // $('#addToCart-modal-body').html(null);
+                        // $('.c-preloader').hide();
+                        // $('#modal-size').removeClass('modal-lg');
+                        // $('#addToCart-modal-body').html(data.modal_view);
+                        // AIZ.extra.plusMinus();
+                        // AIZ.plugins.slickCarousel();
+                        // updateNavCart(data.nav_cart_view,data.cart_count);
                     }
                 });
-            } else {
+
+                window.dataLayer = window.dataLayer || [];
+                window.dataLayer.push({
+                    'event': 'add_to_cart',
+                    'ecommerce': {
+                        'currency': 'BDT',
+                        'value': data.product.price,
+                        'items': [{
+                            'item_id': data.product.id,
+                            'item_name': data.product.name,
+                            'price': data.product.price,
+                            'quantity': 1
+                        }]
+                    }
+                });
+
+                if ("{{ get_setting('facebook_pixel') }}" == 1){
+                    // Facebook Pixel AddToCart Event
+                    fbq('track', 'AddToCart', {content_type: 'product'});
+                    // Facebook Pixel AddToCart Event
+                }
+            }
+            else{
                 AIZ.plugins.notify('warning', "{{ translate('Please choose all the options') }}");
             }
         }
 
-
-
+        
         function buyNow(){
             @if (Auth::check() && Auth::user()->user_type != 'customer')
                 AIZ.plugins.notify('warning', "{{ translate('Please Login as a customer to add products to the Cart.') }}");
@@ -796,91 +784,29 @@
                 $('#addToCart-modal-body').html(null);
                 $('#addToCart').modal();
                 $('.c-preloader').show();
-
                 $.ajax({
-                    type: "POST",
+                    type:"POST",
                     url: '{{ route('cart.addToCart') }}',
                     data: $('#option-choice-form').serializeArray(),
                     success: function(data){
-                        $('.c-preloader').hide();
-
                         if(data.status == 1){
                             $('#addToCart-modal-body').html(data.modal_view);
-                            updateNavCart(data.nav_cart_view, data.cart_count);
+                            updateNavCart(data.nav_cart_view,data.cart_count);
                             window.location.replace("{{ route('cart') }}");
-
-                            // GTM DataLayer Push
-                            if(data.product) {
-                                window.dataLayer = window.dataLayer || [];
-                                window.dataLayer.push({
-                                    'event': 'purchase',
-                                    'ecommerce': {
-                                        'currency': 'BDT',
-                                        'value': data.product.price,
-                                        'items': [{
-                                            'item_id': data.product.id,
-                                            'item_name': data.product.name,
-                                            'price': data.product.price,
-                                            'quantity': 1
-                                        }]
-                                    }
-                                });
-
-                                // Facebook Pixel Track
-                                if ("{{ get_setting('facebook_pixel') }}" == 1){
-                                    fbq('track', 'Purchase', {
-                                        content_ids: [data.product.id],
-                                        content_type: 'product',
-                                        value: data.product.price,
-                                        currency: 'BDT'
-                                    });
-                                }
-                            }
-
-
-                            if(data.product) {
-                                window.dataLayer = window.dataLayer || [];
-                                window.dataLayer.push({
-                                    'event': 'begin_checkout',
-                                    'ecommerce': {
-                                        'currency': 'BDT',
-                                        'value': data.product.price,
-                                        'items': [{
-                                            'item_id': data.product.id,
-                                            'item_name': data.product.name,
-                                            'price': data.product.price,
-                                            'quantity': 1
-                                        }]
-                                    }
-                                });
-
-                                // Facebook Pixel Track
-                                if ("{{ get_setting('facebook_pixel') }}" == 1){
-                                    fbq('track', 'InitiateCheckout', {
-                                        content_ids: [data.product.id],
-                                        content_type: 'product',
-                                        value: data.product.price,
-                                        currency: 'BDT'
-                                    });
-                                }
-                            }
-
-                        } else {
+                        }
+                        else{
+                            $('#addToCart-modal-body').html(null);
+                            $('.c-preloader').hide();
                             $('#modal-size').removeClass('modal-lg');
                             $('#addToCart-modal-body').html(data.modal_view);
                         }
-                    },
-                    error: function(xhr, status, error){
-                        $('.c-preloader').hide();
-                        console.error(error);
-                        AIZ.plugins.notify('danger', "{{ translate('Failed to process Buy Now. Please try again.') }}");
                     }
-                });
-            } else {
+               });
+            }
+            else{
                 AIZ.plugins.notify('warning', "{{ translate('Please choose all the options') }}");
             }
         }
-
 
         function bid_single_modal(bid_product_id, min_bid_amount){
             @if (Auth::check() && (isCustomer() || isSeller()))

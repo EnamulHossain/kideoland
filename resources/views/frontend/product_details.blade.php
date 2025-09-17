@@ -408,22 +408,11 @@
             });
         }
 
-        function trackViewContent(productId, productName, price, category = 'General') {
+        function trackViewContent() {
             // GTM
             window.dataLayer = window.dataLayer || [];
             window.dataLayer.push({
                 'event': 'view_item',
-                'ecommerce': {
-                    'currency': 'BDT',
-                    'value': parseFloat(price),
-                    'items': [{
-                        'item_id': productId.toString(),
-                        'item_name': productName,
-                        'category': category,
-                        'price': parseFloat(price),
-                        'quantity': 1
-                    }]
-                }
             });
 
             // Facebook Pixel
