@@ -558,5 +558,17 @@
         @include('frontend.partials.google_map')
     @endif
 
-    
+
+        <!-- GTM Begin add_to_cart Event -->
+    <script>
+        $(document).ready(function() {
+
+            window.dataLayer = window.dataLayer || [];
+            window.dataLayer.push({
+                'event': 'add_to_cart',
+            });
+        });
+    </script>
+    <!-- GTM Begin add_to_cart Event -->
+
 @endsection
