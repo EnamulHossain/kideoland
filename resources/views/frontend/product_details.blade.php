@@ -412,7 +412,7 @@
             // GTM
             window.dataLayer = window.dataLayer || [];
             window.dataLayer.push({
-                'event': 'ViewContent',
+                'event': 'view_item',
             });
 
             // Facebook Pixel
@@ -427,52 +427,27 @@
 
     </script>
 
-    <!-- GTM add_to_cart Event -->
-    <script>
-        window.dataLayer = window.dataLayer || [];
-                window.dataLayer.push({
-                    'event': 'add_to_cart',
-                    'ecommerce': {
-                        'currency': 'BDT',
-                        'value': data.product.price,
-                        'items': [{
-                            'item_id': data.product.id,
-                            'item_name': data.product.name,
-                            'price': data.product.price,
-                            'quantity': 1
-                        }]
-                    }
-                });
-    </script>
-    <!-- GTM add_to_cart Event -->
-
-    <!-- GTM add_to_cart Event -->
-    <script>
-        window.dataLayer = window.dataLayer || [];
-                window.dataLayer.push({
-                    'event': 'AddToCard',
-                    'ecommerce': {
-                        'currency': 'BDT',
-                        'value': data.product.price,
-                        'items': [{
-                            'item_id': data.product.id,
-                            'item_name': data.product.name,
-                            'price': data.product.price,
-                            'quantity': 1
-                        }]
-                    }
-                });
-    </script>
-    <!-- GTM add_to_cart Event -->
 
 
+    <!-- GTM Begin view_item Event -->
     <script>
-        function trackViewContent() {
-            // GTM
+        $(document).ready(function() {
+            var currend_code = '{{ get_system_currency()->code }}';
+            var amount = '{{ single_price($combined_order->grand_total) }}';
             window.dataLayer = window.dataLayer || [];
             window.dataLayer.push({
-                'event': 'ViewContent',
+                'event': 'view_item',
+                'ecommerce': {
+                    'currency': currend_code,
+                    'value': amount,
+                    'items': [{
+                        'item_name': 'Order',
+                        'price': amount,
+                        'quantity': 1
+                    }]
+                }
             });
-        }
+        });
     </script>
+    <!-- GTM Begin view_item Event -->
 @endsection
