@@ -105,3 +105,15 @@
         @endif
     </div>
 @endif
+
+
+<!-- GTM Begin search Event -->
+<script>
+    $(document).ready(function() {
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({
+            'event': 'search',
+        });
+    });
+</script>
+<!-- GTM Begin search Event -->
