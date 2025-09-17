@@ -322,7 +322,7 @@
     </script>
     <!-- GTM Purchase Event -->
 
-    <!-- GTM Begin Checkout Event -->
+    <!-- GTM Begin add_to_cart Event -->
     <script>
         $(document).ready(function() {
             var currend_code = '{{ get_system_currency()->code }}';
@@ -342,5 +342,28 @@
             });
         });
     </script>
-    <!-- GTM Begin Checkout Event -->
+    <!-- GTM Begin add_to_cart Event -->
+
+
+    <!-- GTM Begin add_to_cart Event -->
+    <script>
+        $(document).ready(function() {
+            var currend_code = '{{ get_system_currency()->code }}';
+            var amount = '{{ single_price($combined_order->grand_total) }}';
+            window.dataLayer = window.dataLayer || [];
+            window.dataLayer.push({
+                'event': 'ViewContent',
+                'ecommerce': {
+                    'currency': currend_code,
+                    'value': amount,
+                    'items': [{
+                        'item_name': 'Order',
+                        'price': amount,
+                        'quantity': 1
+                    }]
+                }
+            });
+        });
+    </script>
+    <!-- GTM Begin add_to_cart Event -->
 @endsection
