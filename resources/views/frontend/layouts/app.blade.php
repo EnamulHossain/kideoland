@@ -24,8 +24,12 @@
     <meta name="description" content="@yield('meta_description', get_setting('meta_description'))" />
     <meta name="keywords" content="@yield('meta_keywords', get_setting('meta_keywords'))">
 
-    <link rel="icon" href="https://www.kideoland.com/public/uploads/all/wEp6FT2LRbWrOJLH0xSpqCMIc471PKepPOP5J3Xd.png" type="image/x-icon">
-    <link rel="icon" href="https://www.kideoland.com/public/uploads/all/wEp6FT2LRbWrOJLH0xSpqCMIc471PKepPOP5J3Xd.png" type="image/png">
+    <link rel="icon"
+        href="https://www.kideoland.com/public/uploads/all/wEp6FT2LRbWrOJLH0xSpqCMIc471PKepPOP5J3Xd.png"
+        type="image/x-icon">
+    <link rel="icon"
+        href="https://www.kideoland.com/public/uploads/all/wEp6FT2LRbWrOJLH0xSpqCMIc471PKepPOP5J3Xd.png"
+        type="image/png">
 
     @yield('meta')
 
@@ -215,6 +219,12 @@
 
 </head>
 <body>
+
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TP8KW8CJ"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+
     <!-- aiz-main-wrapper -->
     <div class="aiz-main-wrapper d-flex flex-column bg-white">
         @php
@@ -237,7 +247,7 @@
 
     </div>
 
-    {{-- @if(get_setting('use_floating_buttons') == 1)
+    {{-- @if (get_setting('use_floating_buttons') == 1)
         <!-- Floating Buttons -->
         @include('frontend.inc.floating_buttons')
     @endif --}}
@@ -247,7 +257,7 @@
     </div>
 
 
-    @if (env("DEMO_MODE") == "On")
+    @if (env('DEMO_MODE') == 'On')
         <!-- demo nav -->
         @include('frontend.inc.demo_nav')
     @endif
@@ -261,7 +271,7 @@
 
     <div class="aiz-custom-alert {{ get_setting('custom_alert_location') }}">
         @foreach ($custom_alerts as $custom_alert)
-            @if($custom_alert->id == 1)
+            @if ($custom_alert->id == 1)
                 <div class="aiz-cookie-alert mb-3" style="box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.24);">
                     <div class="p-3 px-lg-2rem rounded-0" style="background: {{ $custom_alert->background_color }};">
                         <div class="text-{{ $custom_alert->text_color }} mb-3">
@@ -297,7 +307,7 @@
         $dynamic_popups = App\Models\DynamicPopup::where('status', 1)->orderBy('id', 'asc')->get();
     @endphp
     @foreach ($dynamic_popups as $key => $dynamic_popup)
-        @if($dynamic_popup->id == 1)
+        @if ($dynamic_popup->id == 1)
             <div class="modal website-popup removable-session d-none" data-key="website-popup" data-value="removed">
                 <div class="absolute-full bg-black opacity-60"></div>
                 <div class="modal-dialog modal-dialog-centered modal-dialog-zoom modal-md mx-4 mx-md-auto">
@@ -718,7 +728,7 @@
 
             if(checkAddToCartValidity()) {
                 $.ajax({
-                    type:"POST",
+                    type: "POST",
                     url: '{{ route('cart.addToCart') }}',
                     data: {
                         _token: '{{ csrf_token() }}',
@@ -726,77 +736,46 @@
                         quantity: 1
                     },
                     success: function(data){
+                        // Redirect to checkout
                         window.location.href = '{{ route('checkout') }}';
-                        // $('#addToCart-modal-body').html(null);
-                        // $('.c-preloader').hide();
-                        // $('#modal-size').removeClass('modal-lg');
-                        // $('#addToCart-modal-body').html(data.modal_view);
-                        // AIZ.extra.plusMinus();
-                        // AIZ.plugins.slickCarousel();
-                        // updateNavCart(data.nav_cart_view,data.cart_count);
+
+                        // Push to GTM dataLayer
+                        window.dataLayer = window.dataLayer || [];
+                        window.dataLayer.push({
+                            'event': 'add_to_cart',
+                            'ecommerce': {
+                                'currency': 'BDT',
+                                'value': data.product.price,
+                                'items': [{
+                                    'item_id': data.product.id,
+                                    'item_name': data.product.name,
+                                    'price': data.product.price,
+                                    'quantity': 1
+                                }]
+                            }
+                        });
+
+                        // Facebook Pixel Track
+                        if ("{{ get_setting('facebook_pixel') }}" == 1){
+                            fbq('track', 'AddToCart', {
+                                content_ids: [data.product.id],
+                                content_type: 'product',
+                                value: data.product.price,
+                                currency: 'BDT'
+                            });
+                        }
+                    },
+                    error: function(xhr, status, error){
+                        console.error(error);
+                        AIZ.plugins.notify('danger', "{{ translate('Failed to add to cart. Please try again.') }}");
                     }
                 });
-
-                window.dataLayer = window.dataLayer || [];
-                window.dataLayer.push({
-                    'event': 'add_to_cart',
-                    'ecommerce': {
-                        'currency': 'BDT',
-                        'value': data.product.price,
-                        'items': [{
-                            'item_id': data.product.id,
-                            'item_name': data.product.name,
-                            'price': data.product.price,
-                            'quantity': 1
-                        }]
-                    }
-                });
-
-                if ("{{ get_setting('facebook_pixel') }}" == 1){
-                    // Facebook Pixel AddToCart Event
-                    fbq('track', 'AddToCart', {content_type: 'product'});
-                    // Facebook Pixel AddToCart Event
-                }
-            }
-            else{
+            } else {
                 AIZ.plugins.notify('warning', "{{ translate('Please choose all the options') }}");
             }
         }
 
-        {{--function addToCart(){--}}
-        {{--    @if (Auth::check() && Auth::user()->user_type != 'customer')--}}
-        {{--        AIZ.plugins.notify('warning', "{{ translate('Please Login as a customer to add products to the Cart.') }}");--}}
-        {{--        return false;--}}
-        {{--    @endif--}}
 
-        {{--    if(checkAddToCartValidity()) {--}}
-        {{--        $('#addToCart').modal();--}}
-        {{--        $('.c-preloader').show();--}}
-        {{--        $.ajax({--}}
-        {{--            type:"POST",--}}
-        {{--            url: '{{ route('cart.addToCart') }}',--}}
-        {{--            data: $('#option-choice-form').serializeArray(),--}}
-        {{--            success: function(data){--}}
-        {{--               $('#addToCart-modal-body').html(null);--}}
-        {{--               $('.c-preloader').hide();--}}
-        {{--               $('#modal-size').removeClass('modal-lg');--}}
-        {{--               $('#addToCart-modal-body').html(data.modal_view);--}}
-        {{--               AIZ.extra.plusMinus();--}}
-        {{--               AIZ.plugins.slickCarousel();--}}
-        {{--               updateNavCart(data.nav_cart_view,data.cart_count);--}}
-        {{--            }--}}
-        {{--        });--}}
-
-        {{--        if ("{{ get_setting('facebook_pixel') }}" == 1){--}}
-        {{--            // Facebook Pixel AddToCart Event--}}
-        {{--            fbq('track', 'AddToCart', {content_type: 'product'});--}}
-        {{--            // Facebook Pixel AddToCart Event--}}
-        {{--        }--}}
-        {{--    }--}}
-        {{--    else{--}}
-        {{--        AIZ.plugins.notify('warning', "{{ translate('Please choose all the options') }}");--}}
-        {{--    }--}}
-        {{--}--}}
 
         function buyNow(){
             @if (Auth::check() && Auth::user()->user_type != 'customer')
@@ -808,29 +787,63 @@
                 $('#addToCart-modal-body').html(null);
                 $('#addToCart').modal();
                 $('.c-preloader').show();
+
                 $.ajax({
-                    type:"POST",
+                    type: "POST",
                     url: '{{ route('cart.addToCart') }}',
                     data: $('#option-choice-form').serializeArray(),
                     success: function(data){
+                        $('.c-preloader').hide();
+
                         if(data.status == 1){
                             $('#addToCart-modal-body').html(data.modal_view);
-                            updateNavCart(data.nav_cart_view,data.cart_count);
+                            updateNavCart(data.nav_cart_view, data.cart_count);
                             window.location.replace("{{ route('cart') }}");
-                        }
-                        else{
-                            $('#addToCart-modal-body').html(null);
-                            $('.c-preloader').hide();
+
+                            // GTM DataLayer Push
+                            if(data.product) {
+                                window.dataLayer = window.dataLayer || [];
+                                window.dataLayer.push({
+                                    'event': 'buy_now',
+                                    'ecommerce': {
+                                        'currency': 'BDT',
+                                        'value': data.product.price,
+                                        'items': [{
+                                            'item_id': data.product.id,
+                                            'item_name': data.product.name,
+                                            'price': data.product.price,
+                                            'quantity': 1
+                                        }]
+                                    }
+                                });
+
+                                // Facebook Pixel Track
+                                if ("{{ get_setting('facebook_pixel') }}" == 1){
+                                    fbq('track', 'Purchase', {
+                                        content_ids: [data.product.id],
+                                        content_type: 'product',
+                                        value: data.product.price,
+                                        currency: 'BDT'
+                                    });
+                                }
+                            }
+
+                        } else {
                             $('#modal-size').removeClass('modal-lg');
                             $('#addToCart-modal-body').html(data.modal_view);
                         }
+                    },
+                    error: function(xhr, status, error){
+                        $('.c-preloader').hide();
+                        console.error(error);
+                        AIZ.plugins.notify('danger', "{{ translate('Failed to process Buy Now. Please try again.') }}");
                     }
-               });
-            }
-            else{
+                });
+            } else {
                 AIZ.plugins.notify('warning', "{{ translate('Please choose all the options') }}");
             }
         }
+
 
         function bid_single_modal(bid_product_id, min_bid_amount){
             @if (Auth::check() && (isCustomer() || isSeller()))
@@ -989,7 +1002,7 @@
         }
     </script>
 
-    @if (env("DEMO_MODE") == "On")
+    @if (env('DEMO_MODE') == 'On')
         <script>
             var demoNav = document.querySelector('.aiz-demo-nav');
             var menuBtn = document.querySelector('.aiz-demo-nav-toggler');
@@ -1036,15 +1049,12 @@
                     $('header').delay(800).removeClass('z-1').addClass('z-1020');
                 }
             }
-        </script>
-
-    @endif
+        </script> @endif
 
     @yield('script')
 
     @php
-        echo get_setting('footer_script');
-    @endphp
+echo get_setting('footer_script'); @endphp
 
 </body>
 </html>
