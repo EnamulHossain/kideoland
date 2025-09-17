@@ -412,7 +412,7 @@
             // GTM
             window.dataLayer = window.dataLayer || [];
             window.dataLayer.push({
-                'event': 'view_item',
+                'event': 'ViewContent',
             });
 
             // Facebook Pixel
