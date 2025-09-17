@@ -329,7 +329,7 @@
             var amount = '{{ single_price($combined_order->grand_total) }}';
             window.dataLayer = window.dataLayer || [];
             window.dataLayer.push({
-                'event': 'begin_checkout',
+                'event': 'add_to_cart',
                 'ecommerce': {
                     'currency': currend_code,
                     'value': amount,
