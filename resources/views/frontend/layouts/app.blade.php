@@ -217,6 +217,15 @@
     echo get_setting('header_script');
 @endphp
 
+<!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-TP8KW8CJ');</script>
+<!-- End Google Tag Manager -->
+
+
 </head>
 <body>
 
@@ -804,7 +813,7 @@
                             if(data.product) {
                                 window.dataLayer = window.dataLayer || [];
                                 window.dataLayer.push({
-                                    'event': 'buy_now',
+                                    'event': 'purchase',
                                     'ecommerce': {
                                         'currency': 'BDT',
                                         'value': data.product.price,
@@ -820,6 +829,34 @@
                                 // Facebook Pixel Track
                                 if ("{{ get_setting('facebook_pixel') }}" == 1){
                                     fbq('track', 'Purchase', {
+                                        content_ids: [data.product.id],
+                                        content_type: 'product',
+                                        value: data.product.price,
+                                        currency: 'BDT'
+                                    });
+                                }
+                            }
+
+
+                            if(data.product) {
+                                window.dataLayer = window.dataLayer || [];
+                                window.dataLayer.push({
+                                    'event': 'begin_checkout',
+                                    'ecommerce': {
+                                        'currency': 'BDT',
+                                        'value': data.product.price,
+                                        'items': [{
+                                            'item_id': data.product.id,
+                                            'item_name': data.product.name,
+                                            'price': data.product.price,
+                                            'quantity': 1
+                                        }]
+                                    }
+                                });
+
+                                // Facebook Pixel Track
+                                if ("{{ get_setting('facebook_pixel') }}" == 1){
+                                    fbq('track', 'InitiateCheckout', {
                                         content_ids: [data.product.id],
                                         content_type: 'product',
                                         value: data.product.price,
