@@ -426,4 +426,34 @@
         }
 
     </script>
+
+    <!-- GTM add_to_cart Event -->
+    <script>
+        window.dataLayer = window.dataLayer || [];
+                window.dataLayer.push({
+                    'event': 'add_to_cart',
+                    'ecommerce': {
+                        'currency': 'BDT',
+                        'value': data.product.price,
+                        'items': [{
+                            'item_id': data.product.id,
+                            'item_name': data.product.name,
+                            'price': data.product.price,
+                            'quantity': 1
+                        }]
+                    }
+                });
+    </script>
+    <!-- GTM add_to_cart Event -->
+
+
+    <script>
+        function trackViewContent() {
+            // GTM
+            window.dataLayer = window.dataLayer || [];
+            window.dataLayer.push({
+                'event': 'ViewContent',
+            });
+        }
+    </script>
 @endsection

@@ -773,7 +773,7 @@
             }
         }
 
-        
+
         function buyNow(){
             @if (Auth::check() && Auth::user()->user_type != 'customer')
                 AIZ.plugins.notify('warning', "{{ translate('Please Login as a customer to add products to the Cart.') }}");
