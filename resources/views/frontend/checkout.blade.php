@@ -557,4 +557,27 @@
     @if (get_setting('google_map') == 1)
         @include('frontend.partials.google_map')
     @endif
+
+
+        <!-- GTM Begin add_to_cart Event -->
+    <script>
+        $(document).ready(function() {
+            var currend_code = '{{ get_system_currency()->code }}';
+            // var amount = '{{ single_price($combined_order->grand_total) }}';
+            window.dataLayer = window.dataLayer || [];
+            window.dataLayer.push({
+                'event': 'add_to_cart',
+                // 'ecommerce': {
+                //     'currency': currend_code,
+                //     'value': amount,
+                //     'items': [{
+                //         'item_name': 'Order',
+                //         'price': amount,
+                //         'quantity': 1
+                //     }]
+                // }
+            });
+        });
+    </script>
+    <!-- GTM Begin add_to_cart Event -->
 @endsection

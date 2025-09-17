@@ -345,7 +345,7 @@
     <!-- GTM Begin add_to_cart Event -->
 
 
-    <!-- GTM Begin view_item Event -->
+    {{-- <!-- GTM Begin view_item Event -->
     <script>
         $(document).ready(function() {
             var currend_code = '{{ get_system_currency()->code }}';
@@ -365,7 +365,7 @@
             });
         });
     </script>
-    <!-- GTM Begin view_item Event -->
+    <!-- GTM Begin view_item Event --> --}}
 
 
         <!-- GTM Begin remove_from_cart Event -->
@@ -412,5 +412,5 @@
         });
     </script>
     <!-- GTM Begin search Event -->
-    
+
 @endsection
