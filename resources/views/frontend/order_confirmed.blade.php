@@ -391,7 +391,7 @@
     <!-- GTM Begin remove_from_cart Event -->
 
 
-    <!-- GTM Begin search Event -->
+    {{-- <!-- GTM Begin search Event -->
     <script>
         $(document).ready(function() {
             window.dataLayer = window.dataLayer || [];
@@ -400,6 +400,6 @@
             });
         });
     </script>
-    <!-- GTM Begin search Event -->
+    <!-- GTM Begin search Event --> --}}
 
 @endsection
